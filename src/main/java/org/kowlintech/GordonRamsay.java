@@ -26,7 +26,7 @@ public class GordonRamsay {
     private static JDA jda;
     private static Connection connection;
 
-    public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException {
+    public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException, SQLException, ClassNotFoundException {
         Config config = new Config();
 
         // The JDA Utilities EventWaiter.
@@ -40,8 +40,9 @@ public class GordonRamsay {
         client.setEmojis("✅", "⚠", "❌");
         client.useHelpBuilder(false);
         client.setPrefix(config.getPrefix());
+        client.setActivity(Activity.watching("for" + config.getPrefix() + "help"))
 
-        JDA jda = new JDABuilder(AccountType.BOT)
+        jda = new JDABuilder(AccountType.BOT)
                 // set the token
                 .setToken(config.getToken())
 
@@ -56,24 +57,10 @@ public class GordonRamsay {
                 )
                 .build();
 
-        ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-        String[] activities = new String[]{"with " + config.getPrefix() + "help", "", "People Type"};
-        Random r = new Random();
-        Runnable task = () -> {
-            int randomactivity=r.nextInt(activities.length);
-            if(activities[randomactivity] == "for " + config.getPrefix() + "cook") {
-                jda.getPresence().setActivity(Activity.watching(activities[randomactivity]));
-            } else if (activities[randomactivity] == "Spotify") {
-                jda.getPresence().setActivity(Activity.listening(activities[randomactivity]));
-            } else {
-                jda.getPresence().setActivity(Activity.playing(activities[randomactivity]));
-            }
-        };
-
-        executor.scheduleWithFixedDelay(task, 0, 25, TimeUnit.SECONDS);
+        openDatabaseConnection();
     }
 
-    private void openDatabaseConnection() throws SQLException, ClassNotFoundException {
+    private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://127.0.0.1/ramsay?user=postgres&password=kowlin";
         Connection conn = DriverManager.getConnection(url);
