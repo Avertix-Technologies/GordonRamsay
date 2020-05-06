@@ -40,7 +40,7 @@ public class GordonRamsay {
         client.setEmojis("✅", "⚠", "❌");
         client.useHelpBuilder(false);
         client.setPrefix(config.getPrefix());
-        client.setActivity(Activity.watching("for" + config.getPrefix() + "help"))
+        client.setActivity(Activity.watching("for" + config.getPrefix() + "help"));
 
         jda = new JDABuilder(AccountType.BOT)
                 // set the token
