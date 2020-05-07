@@ -10,6 +10,8 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import org.kowlintech.commands.misc.HelpCommand;
+import org.kowlintech.utils.Categories;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -29,12 +31,10 @@ public class GordonRamsay {
     public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException, SQLException, ClassNotFoundException {
         Config config = new Config();
 
-        // The JDA Utilities EventWaiter.
         EventWaiter waiter = new EventWaiter();
 
         CommandClientBuilder client = new CommandClientBuilder();
 
-        // Setting up the CommandClient.
         client.setOwnerId("525050292400685077");
         client.setCoOwnerIds("363850072309497876");
         client.setEmojis("✅", "⚠", "❌");
@@ -42,15 +42,16 @@ public class GordonRamsay {
         client.setPrefix(config.getPrefix());
         client.setActivity(Activity.watching("for " + config.getPrefix() + "help"));
 
+        client.addCommands(
+                new HelpCommand(Categories.MISCELLANEOUS)
+        );
+
         jda = new JDABuilder(AccountType.BOT)
-                // set the token
                 .setToken(config.getToken())
 
-                // set the game for when the bot is loading
-                .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                .setActivity(Activity.playing("Starting Up... Please Wait"))
+                .setStatus(OnlineStatus.IDLE)
+                .setActivity(Activity.playing("Please Wait..."))
 
-                // add the listeners
                 .addEventListeners(
                         waiter,
                         client.build()
@@ -62,7 +63,7 @@ public class GordonRamsay {
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://127.0.0.1/ramsay?user=postgres&password=kowlin";
+        String url = "jdbc:postgresql://192.168.0.96/ramsay?user=postgres&password=kowlin";
         Connection conn = DriverManager.getConnection(url);
         connection = conn;
         System.out.println("[DATABASE] Connected to PostgreSQL Database!");
