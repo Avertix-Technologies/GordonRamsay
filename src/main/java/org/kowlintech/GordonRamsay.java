@@ -11,10 +11,19 @@ import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import org.kowlintech.commands.misc.HelpCommand;
+import org.kowlintech.commands.moderation.BanCommand;
+import org.kowlintech.commands.moderation.KickCommand;
+import org.kowlintech.commands.moderation.PurgeCommand;
+import org.kowlintech.commands.owner.DeployCommand;
 import org.kowlintech.utils.Categories;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
+import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,6 +36,8 @@ public class GordonRamsay {
 
     private static JDA jda;
     private static Connection connection;
+    public static Socket socketclient;
+    private static ServerSocket server;
 
     public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException, SQLException, ClassNotFoundException {
         Config config = new Config();
@@ -43,7 +54,13 @@ public class GordonRamsay {
         client.setActivity(Activity.watching("for " + config.getPrefix() + "help"));
 
         client.addCommands(
-                new HelpCommand(Categories.MISCELLANEOUS)
+                new HelpCommand(Categories.MISCELLANEOUS),
+
+                new BanCommand(Categories.MODERATION),
+                new KickCommand(Categories.MODERATION),
+                new PurgeCommand(Categories.MODERATION),
+
+                new DeployCommand(Categories.OWNER)
         );
 
         jda = new JDABuilder(AccountType.BOT)
@@ -71,5 +88,16 @@ public class GordonRamsay {
 
     public static Connection getDatabaseConnection() {
         return connection;
+    }
+
+    public static void openSocketClient() {
+        try {
+            //Creating Clientside Socket
+            socketclient = new Socket("127.0.0.1", 1027);
+        } catch (UnknownHostException e) {
+            System.out.println("[Error] An error occurred while connecting to the deployment daemon.");
+        } catch (IOException e) {
+            System.out.println("[Error] Failed to create Writers.");
+        }
     }
 }
