@@ -61,7 +61,7 @@ public class BanCommand extends Command {
             return;
         }
         try {
-            member.ban(0, member.getUser().getName() + "#" + member.getUser().getDiscriminator()).queue();
+            member.ban(0).queue();
             EmbedBuilder eb = new EmbedBuilder();
             eb.setDescription("✅ " + member.getAsMention() + " (" + member.getId() + ")" + " has been banned.");
             eb.setColor(Global.COLOR);

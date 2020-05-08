@@ -62,7 +62,7 @@ public class KickCommand extends Command {
             return;
         }
         try {
-            member.kick(member.getUser().getName() + "#" + member.getUser().getDiscriminator()).queue();
+            member.kick().queue();
             EmbedBuilder eb = new EmbedBuilder();
             eb.setDescription("✅ " + member.getAsMention() + " (" + member.getId() + ")" + " has been kicked.");
             eb.setColor(Global.COLOR);
