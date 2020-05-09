@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import org.kowlintech.commands.fun.RPSCommand;
 import org.kowlintech.commands.misc.*;
 import org.kowlintech.commands.fun.LambSauceCommand;
 import org.kowlintech.commands.moderation.BanCommand;
@@ -50,6 +51,7 @@ public class GordonRamsay {
 
         client.addCommands(
                 new LambSauceCommand(Categories.FUN),
+                new RPSCommand(Categories.FUN),
 
                 new HelpCommand(Categories.MISCELLANEOUS),
                 new SupportCommand(Categories.MISCELLANEOUS),
