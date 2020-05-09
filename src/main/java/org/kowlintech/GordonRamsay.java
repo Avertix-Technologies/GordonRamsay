@@ -1,5 +1,6 @@
 package org.kowlintech;
 
+import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
@@ -11,6 +12,8 @@ import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import org.kowlintech.commands.misc.HelpCommand;
 import org.kowlintech.commands.fun.LambSauceCommand;
+import org.kowlintech.commands.misc.InviteCommand;
+import org.kowlintech.commands.misc.SupportCommand;
 import org.kowlintech.commands.moderation.BanCommand;
 import org.kowlintech.commands.moderation.KickCommand;
 import org.kowlintech.commands.moderation.PurgeCommand;
@@ -51,6 +54,8 @@ public class GordonRamsay {
                 new LambSauceCommand(Categories.FUN),
 
                 new HelpCommand(Categories.MISCELLANEOUS),
+                new SupportCommand(Categories.MISCELLANEOUS),
+                new InviteCommand(Categories.MISCELLANEOUS),
 
                 new BanCommand(Categories.MODERATION),
                 new KickCommand(Categories.MODERATION),
