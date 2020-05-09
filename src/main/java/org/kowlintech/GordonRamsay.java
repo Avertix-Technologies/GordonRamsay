@@ -57,6 +57,7 @@ public class GordonRamsay {
                 new InfoCommand(Categories.MISCELLANEOUS),
                 new SocialCommand(Categories.MISCELLANEOUS),
                 new VoteCommand(Categories.MISCELLANEOUS),
+                new PingCommand(Categories.MISCELLANEOUS),
 
                 new BanCommand(Categories.MODERATION),
                 new KickCommand(Categories.MODERATION),
