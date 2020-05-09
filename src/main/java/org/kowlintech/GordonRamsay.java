@@ -12,6 +12,7 @@ import net.dv8tion.jda.api.exceptions.RateLimitedException;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import org.kowlintech.commands.misc.HelpCommand;
 import org.kowlintech.commands.fun.LambSauceCommand;
+import org.kowlintech.commands.misc.InfoCommand;
 import org.kowlintech.commands.misc.InviteCommand;
 import org.kowlintech.commands.misc.SupportCommand;
 import org.kowlintech.commands.moderation.BanCommand;
@@ -56,6 +57,7 @@ public class GordonRamsay {
                 new HelpCommand(Categories.MISCELLANEOUS),
                 new SupportCommand(Categories.MISCELLANEOUS),
                 new InviteCommand(Categories.MISCELLANEOUS),
+                new InfoCommand(Categories.MISCELLANEOUS),
 
                 new BanCommand(Categories.MODERATION),
                 new KickCommand(Categories.MODERATION),
