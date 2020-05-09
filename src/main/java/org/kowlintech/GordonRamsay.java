@@ -1,6 +1,5 @@
 package org.kowlintech;
 
-import com.jagrosh.jdautilities.command.CommandClient;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
@@ -11,6 +10,7 @@ import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import org.kowlintech.commands.misc.HelpCommand;
+import org.kowlintech.commands.fun.LambSauceCommand;
 import org.kowlintech.commands.moderation.BanCommand;
 import org.kowlintech.commands.moderation.KickCommand;
 import org.kowlintech.commands.moderation.PurgeCommand;
@@ -19,18 +19,12 @@ import org.kowlintech.utils.Categories;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Random;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 public class GordonRamsay {
 
@@ -54,6 +48,8 @@ public class GordonRamsay {
         client.setActivity(Activity.watching("for " + config.getPrefix() + "help"));
 
         client.addCommands(
+                new LambSauceCommand(Categories.FUN),
+
                 new HelpCommand(Categories.MISCELLANEOUS),
 
                 new BanCommand(Categories.MODERATION),
