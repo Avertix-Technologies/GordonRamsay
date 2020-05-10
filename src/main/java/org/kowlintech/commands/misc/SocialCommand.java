@@ -9,7 +9,7 @@ public class SocialCommand extends Command {
 
     public SocialCommand(Category category) {
         this.name = "social";
-        this.help = "Sends links to Gordon Ramsay's social media accounts";
+        this.help = "Sends links for Gordon Ramsay's social media accounts";
         this.guildOnly = true;
         this.category = category;
     }
