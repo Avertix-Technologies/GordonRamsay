@@ -5,20 +5,28 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import org.kowlintech.utils.Insult;
+import org.kowlintech.utils.InsultManager;
 
 import java.awt.*;
+import java.sql.SQLException;
 import java.sql.Time;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-public class LambSauceCommand extends Command {
+public class InsultCommand extends Command {
 
-    public LambSauceCommand(Category category) {
-        this.name = "lambsauce";
+    private InsultManager insultManager;
+
+    public InsultCommand(Category category, InsultManager insultManager) {
+        this.name = "insult";
         this.guildOnly = true;
-        this.help = "Asks the specified user about the whereabouts of the lamb sauce.";
+        this.help = "Insults the specified user.";
         this.arguments = "<user>";
         this.category = category;
+        this.insultManager = insultManager;
     }
 
     @Override
@@ -27,7 +35,7 @@ public class LambSauceCommand extends Command {
 
         // Check for arguments; if none were supplied, insult the user who executed the command.
         if(event.getArgs().isEmpty()){
-            event.reply("You've got to tell me who to ask, you fucking donkey!");
+            event.reply("You've got to tell me who to insult, you fucking donkey!");
             return;
         }
         // If arguments were supplied, parse them into a Member
@@ -54,13 +62,21 @@ public class LambSauceCommand extends Command {
 
         // If the user is trying to execute the command on themselves, insult them then return
         if(member == event.getGuild().getMember(event.getAuthor())){
-            event.reply("You fucking idiot, you can't ask YOURSELF about the lamb sauce!");
+            event.reply("You fucking idiot, you can't insult YOURSELF!");
             return;
         }
 
-        // Ask the question
-        event.getChannel().sendMessage(member.getAsMention() + " can I ask you a question?").queue();
-        event.getChannel().sendMessage(("WHERE'S THE LAMB SAUUUCE!?!?")).queueAfter(5, TimeUnit.SECONDS);
+        try {
+            ArrayList<Insult> insults = insultManager.getInsults();
+
+            Random r = new Random();
+
+            int insult=r.nextInt(insults.size());
+            Insult insult1 = insults.get(insult);
+            event.reply(insult1.getText().replace("{m}", "<@" + member.getId() + ">"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     private static String listOfMembers(List<Member> list, String query)

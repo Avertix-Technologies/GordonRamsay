@@ -10,15 +10,17 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import org.kowlintech.commands.fun.GayCommand;
-import org.kowlintech.commands.fun.RPSCommand;
+import org.kowlintech.commands.fun.*;
 import org.kowlintech.commands.misc.*;
-import org.kowlintech.commands.fun.LambSauceCommand;
 import org.kowlintech.commands.moderation.BanCommand;
 import org.kowlintech.commands.moderation.KickCommand;
 import org.kowlintech.commands.moderation.PurgeCommand;
 import org.kowlintech.commands.owner.DeployCommand;
+import org.kowlintech.commands.owner.ManageInsultsCommand;
+import org.kowlintech.listeners.JoinLeaveListener;
 import org.kowlintech.utils.Categories;
+import org.kowlintech.utils.Insult;
+import org.kowlintech.utils.InsultManager;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
@@ -28,6 +30,7 @@ import java.net.UnknownHostException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 
 public class GordonRamsay {
 
@@ -36,7 +39,7 @@ public class GordonRamsay {
     public static Socket socketclient;
     private static ServerSocket server;
 
-    public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, RateLimitedException, SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, SQLException, ClassNotFoundException {
         Config config = new Config();
 
         EventWaiter waiter = new EventWaiter();
@@ -52,8 +55,10 @@ public class GordonRamsay {
 
         client.addCommands(
                 new LambSauceCommand(Categories.FUN),
+                new FoodMemeCommand(Categories.FUN),
                 new RPSCommand(Categories.FUN),
                 new GayCommand(Categories.FUN),
+                new InsultCommand(Categories.FUN, getInsultManager()),
 
                 new HelpCommand(Categories.MISCELLANEOUS),
                 new SupportCommand(Categories.MISCELLANEOUS),
@@ -68,7 +73,8 @@ public class GordonRamsay {
                 new KickCommand(Categories.MODERATION),
                 new PurgeCommand(Categories.MODERATION),
 
-                new DeployCommand(Categories.OWNER)
+                new DeployCommand(Categories.OWNER),
+                new ManageInsultsCommand(Categories.OWNER, getInsultManager())
         );
 
         jda = new JDABuilder(AccountType.BOT)
@@ -79,11 +85,13 @@ public class GordonRamsay {
 
                 .addEventListeners(
                         waiter,
+                        new JoinLeaveListener(),
                         client.build()
                 )
                 .build();
 
         openDatabaseConnection();
+        checkTables();
     }
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
@@ -92,6 +100,11 @@ public class GordonRamsay {
         Connection conn = DriverManager.getConnection(url);
         connection = conn;
         System.out.println("[DATABASE] Connected to PostgreSQL Database!");
+    }
+
+    private static void checkTables() throws SQLException {
+        Statement st = connection.createStatement();
+        st.execute("CREATE TABLE IF NOT EXISTS insults (id SERIAL PRIMARY KEY, insult TEXT NOT NULL UNIQUE);");
     }
 
     public static Connection getDatabaseConnection() {
@@ -107,5 +120,9 @@ public class GordonRamsay {
         } catch (IOException e) {
             System.out.println("[Error] Failed to create Writers.");
         }
+    }
+
+    private static InsultManager getInsultManager() {
+        return new InsultManager();
     }
 }
