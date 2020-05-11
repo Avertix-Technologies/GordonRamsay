@@ -80,8 +80,8 @@ public class GordonRamsay {
         jda = new JDABuilder(AccountType.BOT)
                 .setToken(config.getToken())
 
-                .setStatus(OnlineStatus.IDLE)
-                .setActivity(Activity.playing("Please Wait..."))
+                .setStatus(OnlineStatus.DO_NOT_DISTURB)
+                .setActivity(Activity.playing("Starting Up..."))
 
                 .addEventListeners(
                         waiter,
@@ -96,7 +96,7 @@ public class GordonRamsay {
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://127.0.0.1/ramsay?user=postgres&password=kowlin";
+        String url = "jdbc:postgresql://127.0.0.1/gramsay?user=postgres&password=kowlin";
         Connection conn = DriverManager.getConnection(url);
         connection = conn;
         System.out.println("[DATABASE] Connected to PostgreSQL Database!");
