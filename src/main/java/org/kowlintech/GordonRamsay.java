@@ -51,6 +51,7 @@ public class GordonRamsay {
         client.setEmojis("✅", "⚠", "❌");
         client.useHelpBuilder(false);
         client.setPrefix(config.getPrefix());
+        client.setAlternativePrefix("<@528984558629027841> ");
         client.setActivity(Activity.watching("for " + config.getPrefix() + "help"));
 
         client.addCommands(
