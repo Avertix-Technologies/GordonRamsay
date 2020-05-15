@@ -12,4 +12,6 @@ public class Global {
     public final static String FEEDBACK = "683753359337062420";
     public final static String JOINLEAVE_LOGS = "683753870333181995";
     public final static String BOT_LOG = "683753919163400244";
+
+    public final static String[] BLACKLIST = new String[]{"683757893253988466"};
 }
