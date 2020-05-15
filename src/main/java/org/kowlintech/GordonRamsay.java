@@ -16,6 +16,7 @@ import org.kowlintech.commands.moderation.BanCommand;
 import org.kowlintech.commands.moderation.KickCommand;
 import org.kowlintech.commands.moderation.PurgeCommand;
 import org.kowlintech.commands.owner.DeployCommand;
+import org.kowlintech.commands.owner.EvalCommand;
 import org.kowlintech.commands.owner.ManageInsultsCommand;
 import org.kowlintech.listeners.JoinLeaveListener;
 import org.kowlintech.utils.Categories;
@@ -75,6 +76,7 @@ public class GordonRamsay {
                 new PurgeCommand(Categories.MODERATION),
 
                 new DeployCommand(Categories.OWNER),
+                new EvalCommand(Categories.OWNER),
                 new ManageInsultsCommand(Categories.OWNER, getInsultManager())
         );
 
