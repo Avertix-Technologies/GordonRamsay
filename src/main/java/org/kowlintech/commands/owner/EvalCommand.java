@@ -30,6 +30,7 @@ public class EvalCommand extends Command {
         this.help = "Eval command.";
         this.arguments = "<code>";
         this.category = category;
+        this.ownerCommand = true;
     }
 
     // \/ \/ \/ \/ \/ \/ \/ \/ \/
@@ -43,11 +44,6 @@ public class EvalCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        if(event.getAuthor().getId() != event.getClient().getOwnerId()) {
-            event.reply("no");
-            return;
-        }
-
         SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy HH:mm ss");
 
         String[] args = event.getMessage().getContentRaw().split(" ");

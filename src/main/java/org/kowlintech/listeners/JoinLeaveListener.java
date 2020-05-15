@@ -105,7 +105,7 @@ public class JoinLeaveListener extends ListenerAdapter {
 
                     log.sendMessage(eb.build()).queue();
 
-                    guild.leave();
+                    guild.leave().queue();
                 }
             }
         }
