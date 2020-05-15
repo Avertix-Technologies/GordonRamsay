@@ -86,25 +86,27 @@ public class JoinLeaveListener extends ListenerAdapter {
     public void onReady(ReadyEvent event) {
         for(Guild guild : event.getJDA().getGuilds()) {
             for(String id : Global.BLACKLIST) {
-                TextChannel log = event.getJDA().getTextChannelById(Global.JOINLEAVE_LOGS);
+                if (guild.getId() == id) {
+                    TextChannel log = event.getJDA().getTextChannelById(Global.JOINLEAVE_LOGS);
 
-                EmbedBuilder eb = new EmbedBuilder();
+                    EmbedBuilder eb = new EmbedBuilder();
 
-                eb.setTitle("Auto-Left Blacklisted Guild");
-                eb.addField("Name", guild.getName(), true);
-                eb.addField("ID", guild.getId(), true);
-                eb.addField("Owner", guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true);
-                eb.addField("Member Count", "" + guild.getMembers().size(), true);
-                eb.addField("Channel Count", "" + guild.getChannels().size(), true);
-                eb.addField("Verification Level", guild.getVerificationLevel().toString(), true);
-                eb.addField("Created At", guild.getTimeCreated().format(DateTimeFormatter.ISO_LOCAL_DATE), true);
-                eb.setThumbnail(guild.getIconUrl());
-                eb.setColor(Color.RED);
-                eb.setTimestamp(Instant.now());
+                    eb.setTitle("Auto-Left Blacklisted Guild");
+                    eb.addField("Name", guild.getName(), true);
+                    eb.addField("ID", guild.getId(), true);
+                    eb.addField("Owner", guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true);
+                    eb.addField("Member Count", "" + guild.getMembers().size(), true);
+                    eb.addField("Channel Count", "" + guild.getChannels().size(), true);
+                    eb.addField("Verification Level", guild.getVerificationLevel().toString(), true);
+                    eb.addField("Created At", guild.getTimeCreated().format(DateTimeFormatter.ISO_LOCAL_DATE), true);
+                    eb.setThumbnail(guild.getIconUrl());
+                    eb.setColor(Color.RED);
+                    eb.setTimestamp(Instant.now());
 
-                log.sendMessage(eb.build()).queue();
+                    log.sendMessage(eb.build()).queue();
 
-                guild.leave();
+                    guild.leave();
+                }
             }
         }
     }
