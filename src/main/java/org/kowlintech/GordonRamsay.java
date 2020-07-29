@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.exceptions.RateLimitedException;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import org.apache.commons.collections4.map.LRUMap;
 import org.kowlintech.commands.fun.*;
 import org.kowlintech.commands.misc.*;
 import org.kowlintech.commands.moderation.BanCommand;
@@ -20,6 +21,7 @@ import org.kowlintech.commands.owner.EvalCommand;
 import org.kowlintech.commands.owner.ManageInsultsCommand;
 import org.kowlintech.listeners.JoinLeaveListener;
 import org.kowlintech.utils.Categories;
+import org.kowlintech.utils.IInsult;
 import org.kowlintech.utils.Insult;
 import org.kowlintech.utils.InsultManager;
 
@@ -28,16 +30,16 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GordonRamsay {
 
     private static JDA jda;
     private static Connection connection;
     public static Socket socketclient;
+    private static LRUMap<Integer, String> insults;
     private static ServerSocket server;
 
     public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, SQLException, ClassNotFoundException {
@@ -46,6 +48,7 @@ public class GordonRamsay {
         EventWaiter waiter = new EventWaiter();
 
         CommandClientBuilder client = new CommandClientBuilder();
+        insults = new LRUMap<>();
 
         client.setOwnerId("525050292400685077");
         client.setCoOwnerIds("363850072309497876");
@@ -96,11 +99,12 @@ public class GordonRamsay {
 
         openDatabaseConnection();
         checkTables();
+        prepareInsults();
     }
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://127.0.0.1/gramsay?user=postgres&password=kowlin";
+        String url = "jdbc:postgresql://192.168.0.96/gramsay?user=postgres&password=kowlin";
         Connection conn = DriverManager.getConnection(url);
         connection = conn;
         System.out.println("[DATABASE] Connected to PostgreSQL Database!");
@@ -109,6 +113,18 @@ public class GordonRamsay {
     private static void checkTables() throws SQLException {
         Statement st = connection.createStatement();
         st.execute("CREATE TABLE IF NOT EXISTS insults (id SERIAL PRIMARY KEY, insult TEXT NOT NULL UNIQUE);");
+    }
+
+    private static void prepareInsults() throws SQLException {
+        PreparedStatement st = getDatabaseConnection().prepareStatement("SELECT * FROM insults");
+        ResultSet rs = st.executeQuery();
+        while (rs.next()) {
+            insults.put(rs.getInt("id"), rs.getString("insult"));
+        }
+    }
+
+    public static LRUMap<Integer, String> getInsults() {
+        return insults;
     }
 
     public static Connection getDatabaseConnection() {

@@ -1,5 +1,6 @@
 package org.kowlintech.utils;
 
+import org.apache.commons.collections4.map.LRUMap;
 import org.kowlintech.GordonRamsay;
 
 import java.sql.Connection;
@@ -7,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class InsultManager {
 
@@ -19,6 +21,7 @@ public class InsultManager {
         st1.setObject(1, insult);
         ResultSet rs = st1.executeQuery();
         while (rs.next()) {
+            GordonRamsay.getInsults().put(rs.getInt("id"), rs.getString("insult"));
             return new Insult(rs.getInt("id"), rs.getString("insult"));
         }
 
@@ -29,15 +32,10 @@ public class InsultManager {
         PreparedStatement st = GordonRamsay.getDatabaseConnection().prepareStatement("DELETE FROM insults WHERE id=?");
         st.setObject(1, id);
         st.execute();
+        GordonRamsay.getInsults().remove(id);
     }
 
-    public ArrayList<Insult> getInsults() throws SQLException {
-        ArrayList<Insult> insults = new ArrayList<>();
-        PreparedStatement st = GordonRamsay.getDatabaseConnection().prepareStatement("SELECT * FROM insults");
-        ResultSet rs = st.executeQuery();
-        while (rs.next()) {
-            insults.add(new Insult(rs.getInt("id"), rs.getString("insult")));
-        }
-        return insults;
+    public LRUMap<Integer, String> getInsults() {
+        return GordonRamsay.getInsults();
     }
 }

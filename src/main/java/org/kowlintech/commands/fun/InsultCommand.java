@@ -5,15 +5,15 @@ import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import org.kowlintech.GordonRamsay;
 import org.kowlintech.utils.Insult;
 import org.kowlintech.utils.InsultManager;
 
 import java.awt.*;
 import java.sql.SQLException;
 import java.sql.Time;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 public class InsultCommand extends Command {
@@ -66,17 +66,12 @@ public class InsultCommand extends Command {
             return;
         }
 
-        try {
-            ArrayList<Insult> insults = insultManager.getInsults();
+        ArrayList<String> insults = new ArrayList<>(GordonRamsay.getInsults().values());
 
-            Random r = new Random();
+        Random r = new Random();
 
-            int insult=r.nextInt(insults.size());
-            Insult insult1 = insults.get(insult);
-            event.reply(insult1.getText().replace("{m}", "<@" + member.getId() + ">"));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        int insult=r.nextInt(insults.size());
+        event.reply(GordonRamsay.getInsults().get(insult).replace("{m}", "<@" + member.getId() + ">"));
     }
 
     private static String listOfMembers(List<Member> list, String query)
