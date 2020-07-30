@@ -1,48 +1,36 @@
 package org.kowlintech;
 
-import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandClientBuilder;
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import net.dv8tion.jda.api.AccountType;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.exceptions.RateLimitedException;
-
-import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import org.apache.commons.collections4.map.LRUMap;
 import org.kowlintech.commands.fun.*;
 import org.kowlintech.commands.misc.*;
 import org.kowlintech.commands.moderation.BanCommand;
 import org.kowlintech.commands.moderation.KickCommand;
 import org.kowlintech.commands.moderation.PurgeCommand;
-import org.kowlintech.commands.owner.DeployCommand;
 import org.kowlintech.commands.owner.EvalCommand;
 import org.kowlintech.commands.owner.ManageInsultsCommand;
 import org.kowlintech.listeners.JoinLeaveListener;
 import org.kowlintech.utils.Categories;
-import org.kowlintech.utils.IInsult;
-import org.kowlintech.utils.Insult;
 import org.kowlintech.utils.InsultManager;
 
 import javax.security.auth.login.LoginException;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.net.UnknownHostException;
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class GordonRamsay {
 
     private static JDA jda;
     private static Connection connection;
-    public static Socket socketclient;
     private static LRUMap<Integer, String> insults;
-    private static ServerSocket server;
 
-    public static void main(String[] args) throws IOException, LoginException, IllegalArgumentException, SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException {
         Config config = new Config();
 
         EventWaiter waiter = new EventWaiter();
@@ -79,7 +67,6 @@ public class GordonRamsay {
                 new KickCommand(Categories.MODERATION),
                 new PurgeCommand(Categories.MODERATION),
 
-                new DeployCommand(Categories.OWNER),
                 new EvalCommand(Categories.OWNER),
                 new ManageInsultsCommand(Categories.OWNER, getInsultManager())
         );
@@ -127,19 +114,17 @@ public class GordonRamsay {
         return insults;
     }
 
-    public static Connection getDatabaseConnection() {
-        return connection;
+    public static ArrayList<String> getInsultsArray() {
+        ArrayList<String> array = new ArrayList<>();
+        for(String str : getInsults().values()) {
+            array.add(str);
+        }
+
+        return array;
     }
 
-    public static void openSocketClient() {
-        try {
-            //Creating Clientside Socket
-            socketclient = new Socket("127.0.0.1", 1027);
-        } catch (UnknownHostException e) {
-            System.out.println("[Error] An error occurred while connecting to the deployment daemon.");
-        } catch (IOException e) {
-            System.out.println("[Error] Failed to create Writers.");
-        }
+    public static Connection getDatabaseConnection() {
+        return connection;
     }
 
     private static InsultManager getInsultManager() {

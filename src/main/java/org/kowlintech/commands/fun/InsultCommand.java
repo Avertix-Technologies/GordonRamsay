@@ -66,12 +66,12 @@ public class InsultCommand extends Command {
             return;
         }
 
-        ArrayList<String> insults = new ArrayList<>(GordonRamsay.getInsults().values());
+        ArrayList<String> insults = new ArrayList<>(GordonRamsay.getInsultsArray());
 
         Random r = new Random();
 
-        int insult=r.nextInt(insults.size());
-        event.reply(GordonRamsay.getInsults().get(insult).replace("{m}", "<@" + member.getId() + ">"));
+        String insult = insults.get(r.nextInt(insults.size()));
+        event.reply(insult.replace("{m}", "<@" + member.getId() + ">"));
     }
 
     private static String listOfMembers(List<Member> list, String query)
