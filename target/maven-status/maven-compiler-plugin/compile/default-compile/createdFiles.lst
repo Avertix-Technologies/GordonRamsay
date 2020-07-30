@@ -10,7 +10,6 @@ org/kowlintech/commands/moderation/KickCommand.class
 org/kowlintech/listeners/JoinLeaveListener.class
 org/kowlintech/commands/misc/HelpCommand.class
 org/kowlintech/commands/misc/VoteCommand.class
-org/kowlintech/commands/owner/DeployCommand.class
 org/kowlintech/utils/InsultManager.class
 org/kowlintech/commands/misc/SupportCommand.class
 org/kowlintech/commands/misc/InfoCommand.class
