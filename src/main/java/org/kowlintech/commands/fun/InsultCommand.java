@@ -74,7 +74,7 @@ public class InsultCommand extends Command {
         int num = r.nextInt(insults.size());
 
         String insult = insults.get(num);
-        event.reply(insult.replace("{m}", "<@" + member.getId() + ">") + " **(Insult: #" + num + ")**");
+        event.reply(insult.replace("{m}", "<@" + member.getId() + ">") + " **(Insult: #" + (num + 1) + ")**");
     }
 
     private static String listOfMembers(List<Member> list)
