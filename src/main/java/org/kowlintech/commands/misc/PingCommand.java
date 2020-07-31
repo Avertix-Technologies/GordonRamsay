@@ -14,6 +14,6 @@ public class PingCommand extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
-        event.reply("Pong! \uD83C\uDFD3 **" + event.getJDA().getGatewayPing() + "ms**");
+        event.reply("Pong! **" + event.getJDA().getGatewayPing() + "ms**");
     }
 }

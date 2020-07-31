@@ -41,7 +41,8 @@ public class LambSauceCommand extends Command {
             else if(found.size()>1)
             {
                 EmbedBuilder eb = new EmbedBuilder();
-                eb.setDescription(listOfMembers(found, event.getArgs()));
+                eb.setTitle("Multiple Members Matching Query");
+                eb.setDescription(listOfMembers(found));
                 eb.setColor(Color.RED);
                 event.reply(eb.build());
                 return;
@@ -63,9 +64,9 @@ public class LambSauceCommand extends Command {
         event.getChannel().sendMessage(("WHERE'S THE LAMB SAUUUCE!?!?")).queueAfter(5, TimeUnit.SECONDS);
     }
 
-    private static String listOfMembers(List<Member> list, String query)
+    private static String listOfMembers(List<Member> list)
     {
-        String out = String.format("⚠ **Multiple members found matching \"%s\":**", query);
+        String out = "";
         for(int i = 0; i < 6 && i < list.size(); i++)
             out += "\n - " + list.get(i).getUser().getName() + " (ID:" + list.get(i).getId() + ")";
         if(list.size() > 6)

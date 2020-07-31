@@ -42,7 +42,8 @@ public class GayCommand extends Command {
             else if(found.size()>1)
             {
                 EmbedBuilder eb = new EmbedBuilder();
-                eb.setDescription(listOfMembers(found, event.getArgs()));
+                eb.setTitle("Multiple Members Matching Query");
+                eb.setDescription(listOfMembers(found));
                 eb.setColor(Color.RED);
                 event.reply(eb.build());
                 return;
@@ -61,16 +62,16 @@ public class GayCommand extends Command {
         // Embed setup
         EmbedBuilder eb = new EmbedBuilder();
         eb.setColor(Global.COLOR);
-        eb.setTitle("\uD83C\uDFF3️\u200D\uD83C\uDF08 **Gay Rating** \uD83C\uDFF3️\u200D\uD83C\uDF08");
+        eb.setTitle("**Gay Rating**");
         eb.setDescription(member.getAsMention() + " is **" + number + "%** gay");
 
         // Send the embed
         event.reply(eb.build());
     }
 
-    private static String listOfMembers(List<Member> list, String query)
+    private static String listOfMembers(List<Member> list)
     {
-        String out = String.format("⚠ **Multiple members found matching \"%s\":**", query);
+        String out = "";
         for(int i = 0; i < 6 && i < list.size(); i++)
             out += "\n - " + list.get(i).getUser().getName() + " (ID:" + list.get(i).getId() + ")";
         if(list.size() > 6)

@@ -3,6 +3,7 @@ package org.kowlintech.commands.misc;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDAInfo;
 import org.kowlintech.utils.constants.Global;
 
 public class InfoCommand extends Command {
@@ -24,7 +25,7 @@ public class InfoCommand extends Command {
 
         // Fields
         eb.addField("Developers", "KowlinMC#2385\nStarman#5874", false);
-        eb.addField("Library", "[JDA](https://github.com/DV8FromTheWorld/JDA)", true);
+        eb.addField("Library", "[JDA v" + JDAInfo.VERSION + "](https://github.com/DV8FromTheWorld/JDA)", true);
         eb.addField("Server Count", String.valueOf(event.getClient().getTotalGuilds()), true);
         eb.addField("Support Server", "[Invite](https://discord.gg/SW7bmXm)", true);
 

@@ -6,6 +6,8 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
 import org.kowlintech.utils.constants.Global;
 
+import java.awt.*;
+
 public class FeedbackCommand extends Command {
 
     public FeedbackCommand(Category category) {
@@ -41,6 +43,11 @@ public class FeedbackCommand extends Command {
 
         // Send the embed
         feedback.sendMessage(eb.build()).queue();
-        event.reply("Your feedback has been submitted. If you abuse this command, you will lose your ability to send feedback.");
+        EmbedBuilder eb1 = new EmbedBuilder();
+        eb1.setTitle("Feedback Submitted");
+        eb1.setDescription("Your feedback has been submitted.");
+        eb1.setColor(Color.GREEN);
+        eb1.setFooter("If you abuse this command, you will lose your ability to send feedback.");
+        event.reply(eb1.build());
     }
 }
