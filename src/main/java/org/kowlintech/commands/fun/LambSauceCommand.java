@@ -1,28 +1,22 @@
 package org.kowlintech.commands.fun;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 
 import java.awt.*;
-import java.sql.Time;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class LambSauceCommand extends Command {
-
-    public LambSauceCommand(Category category) {
-        this.name = "lambsauce";
-        this.guildOnly = true;
-        this.help = "Asks the specified user about the whereabouts of the lamb sauce.";
-        this.arguments = "<user>";
-        this.category = category;
-    }
+@Command(name = "lambsauce", category = Category.FUN, description = "Asks the specified user about the whereabouts of the lamb sauce.", args = "<user>")
+public class LambSauceCommand implements CommandExecutor {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         Member member;
 
         // Check for arguments; if none were supplied, insult the user who executed the command.
@@ -54,7 +48,7 @@ public class LambSauceCommand extends Command {
         }
 
         // If the user is trying to execute the command on themselves, insult them then return
-        if(member == event.getGuild().getMember(event.getAuthor())){
+        if(member.getId() == event.getMember().getId()){
             event.reply("You fucking idiot, you can't ask YOURSELF about the lamb sauce!");
             return;
         }

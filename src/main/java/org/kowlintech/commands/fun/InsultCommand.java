@@ -1,13 +1,15 @@
 package org.kowlintech.commands.fun;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
 import org.kowlintech.GordonRamsay;
 import org.kowlintech.utils.Insult;
 import org.kowlintech.utils.InsultManager;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 
 import java.awt.*;
 import java.sql.SQLException;
@@ -16,21 +18,13 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-public class InsultCommand extends Command {
+@Command(name = "insult", category = Category.FUN, description = "Insults the specified user.", args = "<user>")
+public class InsultCommand implements CommandExecutor {
 
-    private InsultManager insultManager;
-
-    public InsultCommand(Category category, InsultManager insultManager) {
-        this.name = "insult";
-        this.guildOnly = true;
-        this.help = "Insults the specified user.";
-        this.arguments = "<user>";
-        this.category = category;
-        this.insultManager = insultManager;
-    }
+    private InsultManager insultManager = new InsultManager();
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         Member member;
 
         // Check for arguments; if none were supplied, insult the user who executed the command.
@@ -62,7 +56,7 @@ public class InsultCommand extends Command {
         }
 
         // If the user is trying to execute the command on themselves, insult them then return
-        if(member == event.getGuild().getMember(event.getAuthor())){
+        if(member.getId() == event.getMember().getId()){
             event.reply("You fucking idiot, you can't insult YOURSELF!");
             return;
         }

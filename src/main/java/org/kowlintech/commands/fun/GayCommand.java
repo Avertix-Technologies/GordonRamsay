@@ -1,29 +1,23 @@
 package org.kowlintech.commands.fun;
 
-import com.google.gson.internal.$Gson$Preconditions;
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Member;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 import org.kowlintech.utils.constants.Global;
 
 import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
-public class GayCommand extends Command {
-
-    public GayCommand(Category category) {
-        this.name = "gay";
-        this.help = "Answers the ultimate question; how gay is someone?";
-        this.category = category;
-        this.guildOnly = true;
-        this.arguments = "<user>";
-    }
+@Command(name = "gay", category = Category.FUN, description = "Answers the ultimate question; how gay is someone?", args = "<user>")
+public class GayCommand implements CommandExecutor {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         Member member;
 
         // Check for arguments; if none were supplied, insult the user who executed the command.

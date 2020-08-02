@@ -1,19 +1,16 @@
 package org.kowlintech.commands.owner;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.OnlineStatus;
-import net.dv8tion.jda.api.entities.Message;
-import org.kowlintech.GordonRamsay;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 import org.kowlintech.utils.constants.Global;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-import java.awt.*;
-import java.io.*;
-import java.net.Socket;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Date;
@@ -22,31 +19,14 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-public class EvalCommand extends Command {
-
-    public EvalCommand(Category category) {
-        this.name = "eval";
-        this.guildOnly = true;
-        this.help = "Eval command.";
-        this.arguments = "<code>";
-        this.category = category;
-        this.ownerCommand = true;
-    }
-
-    // \/ \/ \/ \/ \/ \/ \/ \/ \/
-    /**
-     * THIS COMMAND IS NOT READY
-     * DO NOT EDIT THIS AND DO NOT EXECUTE IT IN DISCORD.
-     */
-    // /\ /\ /\ /\ /\ /\ /\ /\ /\
-
-    // Don't judge me about this I know it's a clusterfuck right now.
+@Command(name = "eval", category = Category.OWNER, description = "Eval command.", args = "<code>")
+public class EvalCommand implements CommandExecutor {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         SimpleDateFormat SDF = new SimpleDateFormat("dd/MM/yyyy HH:mm ss");
 
-        String[] args = event.getMessage().getContentRaw().split(" ");
+        String[] args = event.getRawEvent().getMessage().getContentRaw().split(" ");
 
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
 

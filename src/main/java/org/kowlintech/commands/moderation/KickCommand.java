@@ -1,31 +1,24 @@
 package org.kowlintech.commands.moderation;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
+import org.kowlintech.utils.command.objects.enums.PermissionType;
 import org.kowlintech.utils.constants.Global;
 
 import java.awt.*;
 import java.util.List;
 
-public class KickCommand extends Command {
-
-    public KickCommand(Category category) {
-        this.name = "kick";
-        this.guildOnly = true;
-        this.help = "Kicks the specified user.";
-        this.arguments = "<user>";
-        this.category = category;
-        this.botPermissions = new Permission[]{Permission.KICK_MEMBERS};
-
-        this.userPermissions = new Permission[]{Permission.KICK_MEMBERS};
-    }
+@Command(name = "kick", category = Category.MODERATION, description = "Kicks the specified user.", args = "<user>", permission = PermissionType.KICK)
+public class KickCommand implements CommandExecutor {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         Member member;
         if(event.getArgs().isEmpty())
         {
@@ -54,8 +47,8 @@ public class KickCommand extends Command {
                 member = found.get(0);
             }
         }
-        if(member == event.getGuild().getMember(event.getAuthor())) {
-            event.reply("You fucking idiot " + event.getAuthor().getAsMention() + " you can't ban yourself!");
+        if(member.getId() == event.getMember().getId()) {
+            event.reply("You fucking idiot " + event.getMember().getAsMention() + " you can't ban yourself!");
             return;
         }
         if(member.hasPermission(Permission.ADMINISTRATOR)) {

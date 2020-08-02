@@ -1,23 +1,19 @@
 package org.kowlintech.commands.misc;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 import org.kowlintech.utils.constants.Global;
 
 import java.lang.management.ManagementFactory;
 
-public class UptimeCommand extends Command {
-
-    public UptimeCommand(Category category) {
-        this.name = "uptime";
-        this.guildOnly = true;
-        this.help = "Shows the bot uptime.";
-        this.category = category;
-    }
+@Command(name = "uptime", category = Category.MISCELLANEOUS, description = "Shows the bot uptime.")
+public class UptimeCommand implements CommandExecutor {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         final long duration = ManagementFactory.getRuntimeMXBean().getUptime();
 
         final long years = duration / 31104000000L;

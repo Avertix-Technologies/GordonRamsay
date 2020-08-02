@@ -85,6 +85,7 @@ public class CommandEvent implements ICommandEvent {
      */
     @Override
     public void reply(String message) {
+        getChannel().sendMessage(message).queue();
     }
 
     /**
@@ -92,7 +93,7 @@ public class CommandEvent implements ICommandEvent {
      */
     @Override
     public void reply(MessageEmbed embed) {
-
+        getChannel().sendMessage(embed).queue();
     }
 
     /**

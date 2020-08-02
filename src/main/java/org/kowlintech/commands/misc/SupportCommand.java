@@ -1,19 +1,15 @@
 package org.kowlintech.commands.misc;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 
-public class SupportCommand extends Command {
-
-    public SupportCommand(Category category) {
-        this.name = "support";
-        this.guildOnly = true;
-        this.help = "Gets an invite to the support server";
-        this.category = category;
-    }
+@Command(name = "support", category = Category.MISCELLANEOUS, description = "Gets an invite to the support server")
+public class SupportCommand implements CommandExecutor {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         event.reply("https://discord.gg/SW7bmXm");
     }
 }

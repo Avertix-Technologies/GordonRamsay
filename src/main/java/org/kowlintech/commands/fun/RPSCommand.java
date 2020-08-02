@@ -1,24 +1,19 @@
 package org.kowlintech.commands.fun;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class RPSCommand extends Command {
-
-    public RPSCommand(Category category) {
-        this.name = "rps";
-        this.help = "Play rock paper scissors with the bot";
-        this.arguments = "<Choice>";
-        this.guildOnly = true;
-        this.category = category;
-    }
+@Command(name = "rps", category = Category.FUN, description = "Play rock paper scissors with the bot", args = "<choice(rock,paper,scissors)>")
+public class RPSCommand implements CommandExecutor {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         if(event.getArgs().isEmpty()){
             event.reply("You need to tell me what your decision is, you fucking idiot!");
             return;

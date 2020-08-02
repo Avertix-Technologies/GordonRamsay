@@ -1,19 +1,17 @@
 package org.kowlintech.commands.misc;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 
-public class PingCommand extends Command {
+import java.sql.SQLException;
 
-    public PingCommand(Category category) {
-        this.name = "ping";
-        this.help = "Gets the bot's latency";
-        this.guildOnly = true;
-        this.category = category;
-    }
+@Command(name = "ping", category = Category.MISCELLANEOUS, description = "Gets the bot's latency.")
+public class PingCommand implements CommandExecutor {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) throws SQLException {
         event.reply("Pong! **" + event.getJDA().getGatewayPing() + "ms**");
     }
 }

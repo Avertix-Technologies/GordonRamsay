@@ -1,13 +1,17 @@
 package org.kowlintech.commands.misc;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
+import org.kowlintech.GordonRamsay;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 import org.kowlintech.utils.constants.Global;
 
 import java.util.ArrayList;
 
-public class HelpCommand extends Command {
+@Command(name = "help", category = Category.MISCELLANEOUS, description = "Shows a list of commands or info about a command.", args = "[command]")
+public class HelpCommand implements CommandExecutor {
 
     private String funListString;
     private String miscListString;
@@ -15,32 +19,24 @@ public class HelpCommand extends Command {
     private String ownerListString;
     private String cmdusage;
 
-
-    public HelpCommand(Category category) {
-        this.name = "help";
-        this.guildOnly = true;
-        this.help = "Shows a list of commands or info about a command.";
-        this.category = category;
-    }
-
     @Override
-    protected void execute(CommandEvent event) {
-        ArrayList<String> funCommandList = new ArrayList<String>();
-        ArrayList<String> miscCommandList = new ArrayList<String>();
-        ArrayList<String> modCommandList = new ArrayList<String>();
-        ArrayList<String> ownerCommandList = new ArrayList<String>();
-        for(Command command : event.getClient().getCommands()) {
-            if(command.getCategory() == Categories.FUN) {
-                funCommandList.add(command.getName());
+    public void execute(CommandEvent event) {
+        ArrayList<String> funCommandList = new ArrayList<>();
+        ArrayList<String> miscCommandList = new ArrayList<>();
+        ArrayList<String> modCommandList = new ArrayList<>();
+        ArrayList<String> ownerCommandList = new ArrayList<>();
+        for(Command command : GordonRamsay.getCommandManager().getCommands()) {
+            if(command.category() == Category.FUN) {
+                funCommandList.add(command.name());
             }
-            if(command.getCategory() == Categories.MISCELLANEOUS) {
-                miscCommandList.add(command.getName());
+            if(command.category() == Category.MISCELLANEOUS) {
+                miscCommandList.add(command.name());
             }
-            if(command.getCategory() == Categories.MODERATION) {
-                modCommandList.add(command.getName());
+            if(command.category() == Category.MODERATION) {
+                modCommandList.add(command.name());
             }
-            if(command.getCategory() == Categories.OWNER) {
-                ownerCommandList.add(command.getName());
+            if(command.category() == Category.OWNER) {
+                ownerCommandList.add(command.name());
             }
         }
         funListString = String.join(" **|** ", funCommandList);
@@ -56,7 +52,7 @@ public class HelpCommand extends Command {
         embed.addField("Fun", funListString, false);
         embed.addField("Miscellaneous", miscListString, false);
         embed.addField("Moderation", modListString, false);
-        if(event.getMember() == event.getGuild().getMemberById(event.getClient().getOwnerId())) {
+        if(GordonRamsay.devIds.contains(event.getMember().getId())) {
             embed.addField("Owner", ownerListString, false);
         }
         embed.setColor(Global.COLOR);
@@ -64,18 +60,18 @@ public class HelpCommand extends Command {
         if(!event.getArgs().isEmpty()) {
             ArrayList<String> commandArray = new ArrayList<String>();
             ArrayList<Command> commandArrayList = new ArrayList<Command>();
-            for(Command cmd : event.getClient().getCommands()) {
-                commandArray.add(cmd.getName());
+            for(Command cmd : GordonRamsay.getCommandManager().getCommands()) {
+                commandArray.add(cmd.name());
                 commandArrayList.add(cmd);
             }
             if(commandArray.contains(event.getArgs())) {
                 Command cmd = commandArrayList.get(commandArray.indexOf(event.getArgs()));
                 EmbedBuilder eb = new EmbedBuilder();
-                eb.setTitle(cmd.getName().substring(0, 1).toUpperCase() + cmd.getName().substring(1) + " Command");
-                if(cmd.getArguments() == null) {
-                    cmdusage = cmd.getHelp() + "\n\n**Usage:** g." + cmd.getName();
+                eb.setTitle(cmd.name().substring(0, 1).toUpperCase() + cmd.name().substring(1) + " Command");
+                if(cmd.args() == null) {
+                    cmdusage = cmd.description() + "\n\n**Usage:** g." + cmd.name();
                 } else {
-                    cmdusage = cmd.getHelp() + "\n\n**Usage:** g." + cmd.getName() + " " + cmd.getArguments();
+                    cmdusage = cmd.description() + "\n\n**Usage:** g." + cmd.name() + " " + cmd.args();
                 }
                 eb.setDescription(cmdusage);
                 eb.setColor(Global.COLOR);

@@ -1,25 +1,21 @@
 package org.kowlintech.commands.fun;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.api.EmbedBuilder;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 import org.kowlintech.utils.constants.Global;
 import org.kowlintech.utils.reddit.MemePost;
 import org.kowlintech.utils.reddit.Reddit;
 
 import java.util.Random;
 
-public class FoodMemeCommand extends Command {
-
-    public FoodMemeCommand(Category c) {
-        this.name = "foodmeme";
-        this.guildOnly = true;
-        this.category = c;
-        this.help = "Shows you a food meme from r/foodmemes or r/gordonramsaymemes";
-    }
+@Command(name = "foodmeme", category = Category.FUN, description = "Shows you a food meme from r/foodmemes or r/gordonramsaymemes")
+public class FoodMemeCommand implements CommandExecutor {
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         String[] subs = new String[]{"foodmemes", "gordonramsaymemes"};
         Random r = new Random();
         String sub = subs[r.nextInt(subs.length)];

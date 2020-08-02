@@ -1,7 +1,12 @@
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\reddit\Reddit.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\fun\GayCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\moderation\BanCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\listeners\CommandListener.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\Command.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\GordonRamsay.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\owner\SpamCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\CommandManager.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\enums\PermissionType.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\InsultManager.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\UptimeCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\moderation\PurgeCommand.java
@@ -12,8 +17,11 @@ C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowli
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\owner\EvalCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\HelpCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\fun\InsultCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\CommandExecutor.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\enums\EnumCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\listeners\JoinLeaveListener.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\moderation\KickCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\ICommandEvent.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\reddit\MemePost.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\fun\LambSauceCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\Insult.java
@@ -22,8 +30,9 @@ C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowli
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\InfoCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\IInsult.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\SocialCommand.java
-C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\Categories.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\CommandEvent.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\InviteCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\PingCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\enums\Category.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\fun\FoodMemeCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\FeedbackCommand.java

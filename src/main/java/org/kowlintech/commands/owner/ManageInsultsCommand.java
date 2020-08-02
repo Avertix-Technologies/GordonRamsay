@@ -1,36 +1,20 @@
 package org.kowlintech.commands.owner;
 
-import com.jagrosh.jdautilities.command.Command;
-import com.jagrosh.jdautilities.command.CommandEvent;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.entities.Message;
-import org.kowlintech.GordonRamsay;
-import org.kowlintech.utils.Insult;
 import org.kowlintech.utils.InsultManager;
+import org.kowlintech.utils.command.objects.Command;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.enums.Category;
 
-import java.awt.*;
-import java.io.*;
-import java.net.Socket;
 import java.sql.SQLException;
-import java.util.concurrent.TimeUnit;
 
-public class ManageInsultsCommand extends Command {
+@Command(name = "manageinsults", category = Category.OWNER, description = "Manages insults for the g.insult command.", args = "<add/delete> <text/id>")
+public class ManageInsultsCommand implements CommandExecutor {
 
-    private InsultManager insultManager;
-
-    public ManageInsultsCommand(Category category, InsultManager insultManager) {
-        this.name = "manageinsults";
-        this.guildOnly = true;
-        this.help = "Manages insults for the g.insult command.";
-        this.category = category;
-        this.arguments = "<add/delete> <text/id>";
-        this.aliases = new String[]{"minsults"};
-        this.ownerCommand = true;
-        this.insultManager = insultManager;
-    }
+    private InsultManager insultManager = new InsultManager();
 
     @Override
-    protected void execute(CommandEvent event) {
+    public void execute(CommandEvent event) {
         if(event.getArgs().trim().isEmpty()) {
             event.reply("Please give an argument!");
             return;
@@ -54,9 +38,9 @@ public class ManageInsultsCommand extends Command {
 
                 try {
                     insultManager.addInsult(messages.trim());
-                    event.replySuccess("Successfully added insult!");
+                    event.reply("Successfully added insult!");
                 } catch (SQLException e) {
-                    event.replyError("An error occurred while adding the insult.");
+                    event.reply("An error occurred while adding the insult.");
                     e.printStackTrace();
                 }
             }
@@ -67,9 +51,9 @@ public class ManageInsultsCommand extends Command {
             } else {
                 try {
                     insultManager.deleteInsult(Integer.parseInt(args[1]));
-                    event.replySuccess("Successfully deleted insult!");
+                    event.reply("Successfully deleted insult!");
                 } catch (SQLException e) {
-                    event.replyError("An error occurred while deleted the insult.");
+                    event.reply("An error occurred while deleted the insult.");
                     e.printStackTrace();
                 }
             }

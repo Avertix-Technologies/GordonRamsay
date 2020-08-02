@@ -1,6 +1,9 @@
 package org.kowlintech.utils.command.objects;
 
+import jdk.internal.jline.internal.Nullable;
+import net.dv8tion.jda.api.Permission;
 import org.kowlintech.utils.command.objects.enums.Category;
+import org.kowlintech.utils.command.objects.enums.PermissionType;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -12,7 +15,8 @@ import java.lang.annotation.Target;
 public @interface Command {
 
     String name();
-    Category getCategory();
+    Category category();
     String description();
+    PermissionType permission() default PermissionType.NONE;
     String args() default "";
 }

@@ -19,4 +19,10 @@ public class CommandManager {
 
         return list;
     }
+
+    public Command getCommand(String command) {
+        Annotation annotation = EnumCommand.valueOf(command.toUpperCase()).getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
+        org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
+        return cmd;
+    }
 }
