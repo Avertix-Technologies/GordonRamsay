@@ -7,6 +7,8 @@ import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.collections4.map.LRUMap;
 import org.kowlintech.commands.fun.*;
 import org.kowlintech.commands.misc.*;
@@ -16,19 +18,22 @@ import org.kowlintech.commands.moderation.PurgeCommand;
 import org.kowlintech.commands.owner.EvalCommand;
 import org.kowlintech.commands.owner.ManageInsultsCommand;
 import org.kowlintech.listeners.JoinLeaveListener;
-import org.kowlintech.utils.Categories;
 import org.kowlintech.utils.InsultManager;
+import org.kowlintech.utils.command.CommandManager;
+import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.enums.EnumCommand;
 
 import javax.security.auth.login.LoginException;
-import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.sql.*;
 import java.util.ArrayList;
 
-public class GordonRamsay {
+public class GordonRamsay extends ListenerAdapter {
 
     private static JDA jda;
     private static Connection connection;
     private static LRUMap<Integer, String> insults;
+    private static CommandManager commandManager;
 
     public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException {
         Config config = new Config();
@@ -37,6 +42,7 @@ public class GordonRamsay {
 
         CommandClientBuilder client = new CommandClientBuilder();
         insults = new LRUMap<>();
+        commandManager = new CommandManager();
 
         client.setOwnerId("525050292400685077");
         client.setCoOwnerIds("363850072309497876");
@@ -89,6 +95,30 @@ public class GordonRamsay {
         prepareInsults();
     }
 
+    @Override
+    public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        if(!event.getMessage().getContentRaw().startsWith("g.") || event.getAuthor().isBot()) {
+            return;
+        }
+        String[] messageSplit = event.getMessage().getContentRaw().split("g.");
+        for(EnumCommand command : EnumCommand.values()) {
+            ArrayList<String> aliases = new ArrayList<>();
+            for(String alias : command.getAliases()) {
+                aliases.add(alias);
+            }
+            if(messageSplit[1].startsWith(command.toString().toLowerCase()) || messageSplit[1].equals(command.toString().toLowerCase()) || aliases.contains(messageSplit[1])) {
+                String[] messageSplit2 = messageSplit[1].split(command.toString().toLowerCase());
+                String[] args = messageSplit2[1].split(" ");
+
+                try {
+                    command.getExecutor().execute(new CommandEvent(event.getGuild(), String.join(" ", args), event, event.getJDA(), event.getMember(), event.getChannel()));
+                } catch (SQLException exception) {
+                    exception.printStackTrace();
+                }
+            }
+        }
+    }
+
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
         String url = "jdbc:postgresql://127.0.0.1/gramsay?user=postgres&password=kowlin";
@@ -121,6 +151,10 @@ public class GordonRamsay {
         }
 
         return array;
+    }
+
+    public static CommandManager getCommandManager() {
+        return commandManager;
     }
 
     public static Connection getDatabaseConnection() {
