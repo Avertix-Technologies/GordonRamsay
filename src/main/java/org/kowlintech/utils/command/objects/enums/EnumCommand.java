@@ -11,12 +11,12 @@ import org.kowlintech.utils.command.objects.CommandExecutor;
 
 public enum EnumCommand {
 
-    FOODMEME(new FoodMemeCommand(), new String[]{}),
+    FOODMEME(new FoodMemeCommand(), new String[]{"fm"}),
     GAY(new GayCommand(), new String[]{}),
     INSULT(new InsultCommand(), new String[]{}),
     LAMBSAUCE(new LambSauceCommand(), new String[]{}),
     RPS(new RPSCommand(), new String[]{}),
-    FEEDBACK(new FeedbackCommand(), new String[]{}),
+    FEEDBACK(new FeedbackCommand(), new String[]{"fb"}),
     HELP(new HelpCommand(), new String[]{}),
     INFO(new InfoCommand(), new String[]{}),
     INVITE(new InviteCommand(), new String[]{}),

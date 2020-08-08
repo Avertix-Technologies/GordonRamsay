@@ -58,7 +58,7 @@ public class BanCommand implements CommandExecutor {
         try {
             member.ban(0).queue();
             EmbedBuilder eb = new EmbedBuilder();
-            eb.setDescription("✅ " + member.getAsMention() + " (" + member.getId() + ")" + " has been banned.");
+            eb.setDescription(":white_check_mark: **" + member.getUser().getName() + "#" + member.getUser().getDiscriminator() + " has been banned.**");
             eb.setColor(Global.COLOR);
             event.reply(eb.build());
         } catch (Exception ex) {

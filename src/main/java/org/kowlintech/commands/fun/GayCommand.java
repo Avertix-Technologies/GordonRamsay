@@ -21,9 +21,8 @@ public class GayCommand implements CommandExecutor {
         Member member;
 
         // Check for arguments; if none were supplied, insult the user who executed the command.
-        if(event.getArgs().isEmpty()){
-            event.reply("You've got to tell me who to check, you fucking donkey!");
-            return;
+        if(event.getArgs().isEmpty()) {
+            member = event.getMember();
         }
         // If arguments were supplied, parse them into a Member
         else{

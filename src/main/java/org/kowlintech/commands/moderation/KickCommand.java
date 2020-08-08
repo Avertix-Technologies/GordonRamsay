@@ -48,17 +48,17 @@ public class KickCommand implements CommandExecutor {
             }
         }
         if(member.getId() == event.getMember().getId()) {
-            event.reply("You fucking idiot " + event.getMember().getAsMention() + " you can't ban yourself!");
+            event.reply("You fucking idiot " + event.getMember().getAsMention() + " you can't kick yourself!");
             return;
         }
         if(member.hasPermission(Permission.ADMINISTRATOR)) {
-            event.reply("I won't ban an admin you fucking idiot.");
+            event.reply("I won't kick an admin you fucking idiot.");
             return;
         }
         try {
             member.kick().queue();
             EmbedBuilder eb = new EmbedBuilder();
-            eb.setDescription("✅ " + member.getAsMention() + " (" + member.getId() + ")" + " has been kicked.");
+            eb.setDescription(":white_check_mark: **" + member.getUser().getName() + "#" + member.getUser().getDiscriminator() + " has been kicked.**");
             eb.setColor(Global.COLOR);
             event.reply(eb.build());
         } catch (Exception ex) {

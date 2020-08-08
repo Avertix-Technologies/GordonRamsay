@@ -35,6 +35,7 @@ public class CommandListener extends ListenerAdapter {
                 org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
 
                 if(cmd.category().equals(Category.OWNER) && !GordonRamsay.devIds.contains(event.getAuthor().getId())) {
+                    event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();
                     return;
                 }
 
@@ -44,7 +45,6 @@ public class CommandListener extends ListenerAdapter {
                 }
 
                 if(cmd.args().isEmpty()) {
-                    System.out.println("test");
                     try {
                         command.getExecutor().execute(new CommandEvent(event.getGuild(), "", event, event.getJDA(), event.getMember(), event.getChannel()));
                     } catch (SQLException exception) {
@@ -57,10 +57,12 @@ public class CommandListener extends ListenerAdapter {
 
                 if(cmd.args().startsWith("[")) {
                     try {
-                        String[] messageSplit2 = messageSplit[1].split(cmd.name());
-                        String[] args = messageSplit2[0].split(" ");
+                        StringBuilder message = new StringBuilder();
+                        for (int i = 1; i < event.getMessage().getContentRaw().split(" ").length; i++) {
+                            message.append(event.getMessage().getContentRaw().split(" ")[i]).append(" ");
+                        }
 
-                        command.getExecutor().execute(new CommandEvent(event.getGuild(), String.join(" ", args), event, event.getJDA(), event.getMember(), event.getChannel()));
+                        command.getExecutor().execute(new CommandEvent(event.getGuild(), message.toString().trim(), event, event.getJDA(), event.getMember(), event.getChannel()));
                         return;
                     } catch (IndexOutOfBoundsException | SQLException ex) {
                         try {
@@ -72,10 +74,12 @@ public class CommandListener extends ListenerAdapter {
                     }
                 }
 
-                String[] messageSplit2 = messageSplit[1].split(cmd.name());
-                String[] args = messageSplit2[0].split(" ");
+                StringBuilder message = new StringBuilder();
+                for (int i = 1; i < event.getMessage().getContentRaw().split(" ").length; i++) {
+                    message.append(event.getMessage().getContentRaw().split(" ")[i]).append(" ");
+                }
 
-                if(args.length < classArgs.length) {
+                if(message.toString().split(" ").length < classArgs.length) {
                     EmbedBuilder eb = new EmbedBuilder();
                     eb.setTitle(cmd.name().substring(0, 1).toUpperCase() + cmd.name().substring(1) + " Command");
                     String cmdusage;
@@ -91,7 +95,7 @@ public class CommandListener extends ListenerAdapter {
                 }
 
                 try {
-                    command.getExecutor().execute(new CommandEvent(event.getGuild(), String.join(" ", args), event, event.getJDA(), event.getMember(), event.getChannel()));
+                    command.getExecutor().execute(new CommandEvent(event.getGuild(), message.toString().trim(), event, event.getJDA(), event.getMember(), event.getChannel()));
                 } catch (SQLException exception) {
                     exception.printStackTrace();
                 }

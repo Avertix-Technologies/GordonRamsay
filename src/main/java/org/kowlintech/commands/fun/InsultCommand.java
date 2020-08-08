@@ -34,7 +34,7 @@ public class InsultCommand implements CommandExecutor {
         }
         // If arguments were supplied, parse them into a Member
         else{
-            List<Member> found = FinderUtil.findMembers(event.getArgs(), event.getGuild());
+            List<Member> found = FinderUtil.findMembers(event.getArgs().trim(), event.getGuild());
             if(found.isEmpty())
             {
                 event.reply("I don't know who the fuck that is but they aren't in this server.");
@@ -56,8 +56,11 @@ public class InsultCommand implements CommandExecutor {
         }
 
         // If the user is trying to execute the command on themselves, insult them then return
-        if(member.getId() == event.getMember().getId()){
+        if(member.getUser().getId().trim() == event.getMember().getUser().getId().trim()){
             event.reply("You fucking idiot, you can't insult YOURSELF!");
+            return;
+        } else if(member.getUser().getId().trim() == event.getJDA().getSelfUser().getId().trim()){
+            event.reply("You fucking idiot, i'm not going to insult MYSELF!");
             return;
         }
 
@@ -68,7 +71,7 @@ public class InsultCommand implements CommandExecutor {
         int num = r.nextInt(insults.size());
 
         String insult = insults.get(num);
-        event.reply(insult.replace("{m}", "<@" + member.getId() + ">") + " **(Insult: #" + (num + 1) + ")**");
+        event.reply(insult.replace("{m}", "<@" + member.getId() + ">"));
     }
 
     private static String listOfMembers(List<Member> list)

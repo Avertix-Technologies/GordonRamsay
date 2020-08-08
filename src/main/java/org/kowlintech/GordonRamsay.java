@@ -93,8 +93,4 @@ public class GordonRamsay extends ListenerAdapter {
     public static Connection getDatabaseConnection() {
         return connection;
     }
-
-    private static InsultManager getInsultManager() {
-        return new InsultManager();
-    }
 }
