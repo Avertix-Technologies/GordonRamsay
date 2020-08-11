@@ -54,7 +54,7 @@ public class GordonRamsay extends ListenerAdapter {
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://192.168.0.96/gramsay?user=postgres&password=kowlin";
+        String url = "jdbc:postgresql://127.0.0.1/gramsay?user=postgres&password=kowlin";
         Connection conn = DriverManager.getConnection(url);
         connection = conn;
         System.out.println("[DATABASE] Connected to PostgreSQL Database!");

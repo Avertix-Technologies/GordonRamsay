@@ -23,7 +23,7 @@ public class Config {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-        this.prefix = "gg.";
+        this.prefix = "g.";
     }
 
     public String getToken() {
