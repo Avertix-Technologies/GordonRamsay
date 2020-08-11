@@ -14,7 +14,7 @@ public class PurgeCommand implements CommandExecutor {
 
     @Override
     public void execute(CommandEvent event) {
-        if(event.getArgs().isEmpty())
+        /**if(event.getArgs().isEmpty())
         {
             event.reply("You gotta give me an amount, you fucking idiot!");
             return;
@@ -30,5 +30,8 @@ public class PurgeCommand implements CommandExecutor {
                 return;
             }
         }
+         **/
+
+        event.getChannel().sendMessage(":x: This command is not currently working at the moment. We will have a fix implemented soon.\n\nThank you for your cooperation.").queue();
     }
 }
