@@ -27,7 +27,6 @@ public enum EnumCommand {
     VOTE(new VoteCommand(), new String[]{}),
     BAN(new BanCommand(), new String[]{}),
     KICK(new KickCommand(), new String[]{}),
-    PURGE(new PurgeCommand(), new String[]{}),
     EVAL(new EvalCommand(), new String[]{}),
     MANAGEINSULTS(new ManageInsultsCommand(), new String[]{});
 
