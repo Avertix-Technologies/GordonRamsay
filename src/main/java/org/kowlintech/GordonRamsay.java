@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.collections4.map.LRUMap;
 import org.kowlintech.listeners.CommandListener;
 import org.kowlintech.listeners.JoinLeaveListener;
+import org.kowlintech.utils.ChangelogManager;
 import org.kowlintech.utils.InsultManager;
 import org.kowlintech.utils.command.CommandManager;
 
@@ -23,6 +24,7 @@ public class GordonRamsay extends ListenerAdapter {
     private static LRUMap<Integer, String> insults;
     private static CommandManager commandManager;
     public static ArrayList<String> devIds;
+    private static ChangelogManager changelogManager;
 
     public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException {
         Config config = new Config();
@@ -50,11 +52,12 @@ public class GordonRamsay extends ListenerAdapter {
         openDatabaseConnection();
         checkTables();
         prepareInsults();
+        changelogManager = new ChangelogManager(jda);
     }
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://127.0.0.1/gramsay?user=postgres&password=kowlin";
+        String url = "jdbc:postgresql://192.168.0.96/gramsay?user=postgres&password=kowlin";
         Connection conn = DriverManager.getConnection(url);
         connection = conn;
         System.out.println("[DATABASE] Connected to PostgreSQL Database!");
@@ -63,6 +66,7 @@ public class GordonRamsay extends ListenerAdapter {
     private static void checkTables() throws SQLException {
         Statement st = connection.createStatement();
         st.execute("CREATE TABLE IF NOT EXISTS insults (id SERIAL PRIMARY KEY, insult TEXT NOT NULL UNIQUE);");
+        st.execute("CREATE TABLE IF NOT EXISTS changelog(timeadded BIGINT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL);");
     }
 
     private static void prepareInsults() throws SQLException {
@@ -92,5 +96,9 @@ public class GordonRamsay extends ListenerAdapter {
 
     public static Connection getDatabaseConnection() {
         return connection;
+    }
+
+    public static ChangelogManager getChangelogManager() {
+        return changelogManager;
     }
 }
