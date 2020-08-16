@@ -26,7 +26,6 @@ public class CommandListener extends ListenerAdapter {
         Config config = new Config();
 
         if(!event.getMessage().getContentRaw().startsWith(config.getPrefix()) || event.getAuthor().isBot()) {
-            System.out.println("[CommandHandler] Prefix & Non-Bot check completed. (Execution Stopped)");
             return;
         }
         System.out.println("[CommandHandler] Prefix & Non-Bot check completed.");
