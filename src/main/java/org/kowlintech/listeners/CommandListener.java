@@ -34,7 +34,7 @@ public class CommandListener extends ListenerAdapter {
                 for (String alias : command.getAliases()) {
                     aliases.add(alias);
                 }
-                if (event.getMessage().getContentRaw().equalsIgnoreCase(config.getPrefix() + command.name())) {
+                if (event.getMessage().getContentRaw().startsWith(config.getPrefix() + command.name())) {
                     Annotation annotation = command.getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
                     org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
 
