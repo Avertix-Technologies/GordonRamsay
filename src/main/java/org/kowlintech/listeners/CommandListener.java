@@ -36,7 +36,7 @@ public class CommandListener extends ListenerAdapter {
                 for (String alias : command.getAliases()) {
                     aliases.add(alias);
                 }
-                if (messageSplit[1].startsWith(command.name().toLowerCase()) || messageSplit[1].equals(command.name().toLowerCase()) || aliases.contains(messageSplit[1].trim())) {
+                if (messageSplit[1].startsWith(command.name().toLowerCase())) {
                     System.out.println("[CommandHandler] If Command Exists Check Completed");
                     Annotation annotation = command.getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
                     org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
