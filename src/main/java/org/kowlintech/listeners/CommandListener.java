@@ -23,7 +23,6 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        System.out.println("[CommandHandler] GuildMessageReceivedEvent Called.");
         Config config = new Config();
 
         if(!event.getMessage().getContentRaw().startsWith(config.getPrefix()) || event.getAuthor().isBot()) {
