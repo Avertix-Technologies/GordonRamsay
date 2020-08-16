@@ -36,18 +36,23 @@ public class CommandListener extends ListenerAdapter {
                     aliases.add(alias);
                 }
                 if (messageSplit[1].startsWith(command.name().toLowerCase()) || messageSplit[1].equals(command.name().toLowerCase()) || aliases.contains(messageSplit[1].trim())) {
+                    System.out.println("[CommandHandler] If Command Exists Check Completed");
                     Annotation annotation = command.getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
                     org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
 
-                    if (cmd.category().equals(Category.OWNER) && !GordonRamsay.devIds.contains(event.getAuthor().getId())) {
-                        event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();
+                    if (cmd.category().equals(Category.OWNER)) {
+                        if(!GordonRamsay.devIds.contains(event.getAuthor().getId())) {
+                            event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();
+                        }
                         return;
                     }
+                    System.out.println("[CommandHandler] If Owner Check Completed");
 
                     if (cmd.permission() != PermissionType.NONE && !event.getMember().hasPermission(cmd.permission().getPermission())) {
                         event.getChannel().sendMessage("You must have the `" + cmd.permission().getPermission().getName() + "` permission to use that command.").queue();
                         return;
                     }
+                    System.out.println("[CommandHandler] Permissions Check Completed");
 
                     if (cmd.args().isEmpty()) {
                         try {
@@ -55,12 +60,14 @@ public class CommandListener extends ListenerAdapter {
                         } catch (SQLException exception) {
                             exception.printStackTrace();
                         }
+                        System.out.println("[CommandHandler] Execution Stopped. Arguments Empty.");
                         return;
                     }
 
                     String[] classArgs = cmd.args().split(" ");
 
                     if (cmd.args().startsWith("[")) {
+                        System.out.println("[CommandHandler] If Command Doesn't Require Arguments Check Completed");
                         try {
                             StringBuilder message = new StringBuilder();
                             for (int i = 1; i < event.getMessage().getContentRaw().split(" ").length; i++) {
@@ -101,6 +108,7 @@ public class CommandListener extends ListenerAdapter {
 
                     try {
                         command.getExecutor().execute(new CommandEvent(event.getGuild(), message.toString().trim(), event, event.getJDA(), event.getMember(), event.getChannel()));
+                        System.out.println("[CommandHandler] Command Executed Normally");
                     } catch (SQLException exception) {
                         exception.printStackTrace();
                     }
