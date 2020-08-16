@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 @Command(name = "gay", category = Category.FUN, description = "Answers the ultimate question; how gay is someone?", args = "<user>")
-public class GayCommand implements CommandExecutor {
+public class Gay implements CommandExecutor {
 
     @Override
     public void execute(CommandEvent event) {
