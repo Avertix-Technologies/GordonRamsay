@@ -1,7 +1,5 @@
 package org.kowlintech.utils.command.objects;
 
-import jdk.internal.jline.internal.Nullable;
-import net.dv8tion.jda.api.Permission;
 import org.kowlintech.utils.command.objects.enums.Category;
 import org.kowlintech.utils.command.objects.enums.PermissionType;
 
