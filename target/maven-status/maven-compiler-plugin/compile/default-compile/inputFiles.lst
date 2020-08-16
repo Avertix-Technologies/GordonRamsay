@@ -11,6 +11,7 @@ C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowli
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\moderation\PurgeCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\owner\ManageInsultsCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\Config.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\ChangelogManager.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\fun\RPSCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\constants\Global.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\owner\EvalCommand.java
@@ -18,10 +19,13 @@ C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowli
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\fun\InsultCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\CommandExecutor.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\enums\EnumCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\ChangelogCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\listeners\JoinLeaveListener.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\IChangelogMessage.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\moderation\KickCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\ICommandEvent.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\reddit\MemePost.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\EmbedHelper.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\fun\LambSauceCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\Insult.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\SupportCommand.java
@@ -29,8 +33,10 @@ C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowli
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\InfoCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\IInsult.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\SocialCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\owner\ManageChangelogCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\CommandEvent.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\InviteCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\ChangelogMessage.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\PingCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\enums\Category.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\fun\FoodMemeCommand.java

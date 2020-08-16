@@ -6,6 +6,7 @@ import org.kowlintech.commands.moderation.BanCommand;
 import org.kowlintech.commands.moderation.KickCommand;
 import org.kowlintech.commands.moderation.PurgeCommand;
 import org.kowlintech.commands.owner.EvalCommand;
+import org.kowlintech.commands.owner.ManageChangelogCommand;
 import org.kowlintech.commands.owner.ManageInsultsCommand;
 import org.kowlintech.utils.command.objects.CommandExecutor;
 
@@ -16,6 +17,7 @@ public enum EnumCommand {
     INSULT(new InsultCommand(), new String[]{}),
     LAMBSAUCE(new LambSauceCommand(), new String[]{}),
     RPS(new RPSCommand(), new String[]{}),
+    CHANGELOG(new ChangelogCommand(), new String[]{}),
     FEEDBACK(new FeedbackCommand(), new String[]{"fb"}),
     HELP(new HelpCommand(), new String[]{}),
     INFO(new InfoCommand(), new String[]{}),
@@ -28,6 +30,7 @@ public enum EnumCommand {
     BAN(new BanCommand(), new String[]{}),
     KICK(new KickCommand(), new String[]{}),
     EVAL(new EvalCommand(), new String[]{}),
+    MANAGECHANGELOG(new ManageChangelogCommand(), new String[]{"mchangelog", "mcl"}),
     MANAGEINSULTS(new ManageInsultsCommand(), new String[]{});
 
     private String[] aliases;

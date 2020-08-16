@@ -3,6 +3,7 @@ package org.kowlintech.commands.owner;
 import net.dv8tion.jda.api.EmbedBuilder;
 import org.kowlintech.GordonRamsay;
 import org.kowlintech.utils.ChangelogManager;
+import org.kowlintech.utils.EmbedHelper;
 import org.kowlintech.utils.command.objects.Command;
 import org.kowlintech.utils.command.objects.CommandEvent;
 import org.kowlintech.utils.command.objects.CommandExecutor;
@@ -24,18 +25,40 @@ public class ManageChangelogCommand implements CommandExecutor {
         if(args[0].trim().equals("create")) {
             String[] args1 = event.getArgs().split("create");
             String[] args2 = args1[1].split(" | ");
-            changelogManager.createMessage(args2[0], args2[1]);
+            changelogManager.createMessage(args2[1].trim(), args2[3].trim());
             EmbedBuilder eb = new EmbedBuilder();
             eb.setTitle("Success!");
             eb.setColor(Global.COLOR);
             eb.setDescription("New changelog message added!");
             event.reply(eb.build());
         } else if(args[0].trim().equals("edit")) {
+            if(changelogManager.getMessage(Long.parseLong(args[1])) != null) {
+                String[] args1 = event.getArgs().split("edit");
+                String[] args2 = args1[1].split(" | ");
+                changelogManager.editMessage(Long.parseLong(args[1]), args2[2].trim(), args2[3].trim());
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setTitle("Success!");
+                eb.setDescription("Changelog message has been edited!");
+                eb.setColor(Global.COLOR);
+                event.reply(eb.build());
+            } else {
+                event.reply(EmbedHelper.buildErrorEmbed("That changelog message doesn't exist."));
+            }
         } else if(args[0].trim().equals("delete")) {
-
+            if(changelogManager.getMessage(Long.parseLong(args[1])) != null) {
+                changelogManager.deleteMessage(Long.parseLong(args[1]));
+                EmbedBuilder eb = new EmbedBuilder();
+                eb.setTitle("Success!");
+                eb.setDescription("Message deleted from changelog!");
+                eb.setColor(Global.COLOR);
+                event.reply(eb.build());
+            } else {
+                event.reply(EmbedHelper.buildErrorEmbed("That changelog message doesn't exist."));
+            }
         } else if(args[0].trim().equals("list")) {
             EmbedBuilder eb = new EmbedBuilder();
             eb.setTitle("Most Recent Changelog Messages");
+            eb.setColor(Global.COLOR);
             ArrayList<IChangelogMessage> array = changelogManager.getLatestChangelogMessages();
             if(array.size() == 0) {
                 eb.setDescription("There aren't any changelog messages recorded.");
@@ -44,6 +67,9 @@ public class ManageChangelogCommand implements CommandExecutor {
                     eb.addField("**(" + message.getCreationDate() + ")** " + message.getTitle(), message.getDescription(), false);
                 }
             }
+            event.reply(eb.build());
+        } else {
+            event.reply("Arguments: create/edit/delete/list");
         }
     }
 }

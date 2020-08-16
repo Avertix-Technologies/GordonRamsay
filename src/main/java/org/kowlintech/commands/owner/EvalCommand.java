@@ -2,6 +2,7 @@ package org.kowlintech.commands.owner;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.OnlineStatus;
+import org.kowlintech.GordonRamsay;
 import org.kowlintech.utils.command.objects.Command;
 import org.kowlintech.utils.command.objects.CommandEvent;
 import org.kowlintech.utils.command.objects.CommandExecutor;
@@ -50,6 +51,7 @@ public class EvalCommand implements CommandExecutor {
         engine.put("idle", OnlineStatus.IDLE);
         engine.put("online", OnlineStatus.ONLINE);
         engine.put("SDF", SDF);
+        engine.put("database", GordonRamsay.getDatabaseConnection());
         engine.put("Date", new Date());
 
         ScheduledExecutorService service = Executors.newScheduledThreadPool(1);

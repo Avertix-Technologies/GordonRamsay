@@ -26,6 +26,8 @@ public class ChangelogManager {
         st.setString(3, description);
         st.execute();
 
+        System.out.println("Changelog Database Statement: \"" + String.format("INSERT INTO changelog (timeadded, title, description) VALUES(%s, %s, %s);", time, title, description) + "\"");
+
         return new ChangelogMessage(time, title, description);
     }
 
@@ -50,9 +52,15 @@ public class ChangelogManager {
         return new ChangelogMessage(timeAdded, newTitle, newDescription);
     }
 
+    public void deleteMessage(Long timeAdded) throws SQLException {
+        PreparedStatement st = GordonRamsay.getDatabaseConnection().prepareStatement("DELETE FROM changelog WHERE timeadded=?");
+        st.setLong(1, timeAdded);
+        st.execute();
+    }
+
     public ArrayList<IChangelogMessage> getLatestChangelogMessages() throws SQLException {
         ArrayList<IChangelogMessage> array = new ArrayList<>();
-        PreparedStatement st = GordonRamsay.getDatabaseConnection().prepareStatement("SELECT * FROM changelog SORT BY timeadded DESC LIMIT 5");
+        PreparedStatement st = GordonRamsay.getDatabaseConnection().prepareStatement("SELECT * FROM changelog ORDER BY timeadded DESC LIMIT 5");
         ResultSet rs = st.executeQuery();
         while (rs.next()) {
             array.add(new ChangelogMessage(rs.getLong("timeadded"), rs.getString("title"), rs.getString("description")));
