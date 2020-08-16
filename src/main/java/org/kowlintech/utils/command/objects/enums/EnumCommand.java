@@ -13,7 +13,7 @@ import org.kowlintech.utils.command.objects.CommandExecutor;
 public enum EnumCommand {
 
     FOODMEME(new FoodMemeCommand(), new String[]{"fm"}),
-    GAY(new Gay(), new String[]{}),
+    GAYT(new Gay(), new String[]{}),
     INSULT(new InsultCommand(), new String[]{}),
     LAMBSAUCE(new LambSauceCommand(), new String[]{}),
     RPS(new RPSCommand(), new String[]{}),
