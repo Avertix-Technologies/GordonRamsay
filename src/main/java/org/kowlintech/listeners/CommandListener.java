@@ -113,8 +113,6 @@ public class CommandListener extends ListenerAdapter {
                     } catch (SQLException exception) {
                         exception.printStackTrace();
                     }
-                } else {
-                    System.out.println("[CommandHandler] If Command Exists Check Completed (Execution Stopped)");
                 }
             } catch (Exception ex) {
                 EmbedBuilder eb = new EmbedBuilder();
