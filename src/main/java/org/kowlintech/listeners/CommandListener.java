@@ -23,11 +23,14 @@ public class CommandListener extends ListenerAdapter {
 
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
+        System.out.println("[CommandHandler] GuildMessageReceivedEvent Called.");
         Config config = new Config();
 
         if(!event.getMessage().getContentRaw().startsWith(config.getPrefix()) || event.getAuthor().isBot()) {
+            System.out.println("[CommandHandler] Prefix & Non-Bot check completed. (Execution Stopped)");
             return;
         }
+        System.out.println("[CommandHandler] Prefix & Non-Bot check completed.");
         String[] messageSplit = event.getMessage().getContentRaw().split(config.getPrefix());
         for(EnumCommand command : EnumCommand.values()) {
             try {
@@ -112,6 +115,8 @@ public class CommandListener extends ListenerAdapter {
                     } catch (SQLException exception) {
                         exception.printStackTrace();
                     }
+                } else {
+                    System.out.println("[CommandHandler] If Command Exists Check Completed (Execution Stopped)");
                 }
             } catch (Exception ex) {
                 EmbedBuilder eb = new EmbedBuilder();
