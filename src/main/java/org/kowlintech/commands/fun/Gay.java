@@ -13,7 +13,7 @@ import java.awt.*;
 import java.util.List;
 import java.util.Random;
 
-@Command(name = "gayt", category = Category.FUN, description = "Answers the ultimate question; how gay is someone?", args = "<user>")
+@Command(name = "gay", category = Category.FUN, description = "Answers the ultimate question; how gay is someone?", args = "<user>")
 public class Gay implements CommandExecutor {
 
     @Override

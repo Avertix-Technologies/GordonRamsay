@@ -28,8 +28,6 @@ public class CommandListener extends ListenerAdapter {
         if(!event.getMessage().getContentRaw().startsWith(config.getPrefix()) || event.getAuthor().isBot()) {
             return;
         }
-        System.out.println("[CommandHandler] Prefix & Non-Bot check completed.");
-        String[] messageSplit = event.getMessage().getContentRaw().split(config.getPrefix());
         for(EnumCommand command : EnumCommand.values()) {
             try {
                 ArrayList<String> aliases = new ArrayList<>();
@@ -37,7 +35,6 @@ public class CommandListener extends ListenerAdapter {
                     aliases.add(alias);
                 }
                 if (event.getMessage().getContentRaw().equalsIgnoreCase(config.getPrefix() + command.name())) {
-                    System.out.println("[CommandHandler] If Command Exists Check Completed");
                     Annotation annotation = command.getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
                     org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
 
@@ -47,13 +44,11 @@ public class CommandListener extends ListenerAdapter {
                         }
                         return;
                     }
-                    System.out.println("[CommandHandler] If Owner Check Completed");
 
                     if (cmd.permission() != PermissionType.NONE && !event.getMember().hasPermission(cmd.permission().getPermission())) {
                         event.getChannel().sendMessage("You must have the `" + cmd.permission().getPermission().getName() + "` permission to use that command.").queue();
                         return;
                     }
-                    System.out.println("[CommandHandler] Permissions Check Completed");
 
                     if (cmd.args().isEmpty()) {
                         try {
@@ -61,14 +56,12 @@ public class CommandListener extends ListenerAdapter {
                         } catch (SQLException exception) {
                             exception.printStackTrace();
                         }
-                        System.out.println("[CommandHandler] Execution Stopped. Arguments Empty.");
                         return;
                     }
 
                     String[] classArgs = cmd.args().split(" ");
 
                     if (cmd.args().startsWith("[")) {
-                        System.out.println("[CommandHandler] If Command Doesn't Require Arguments Check Completed");
                         try {
                             StringBuilder message = new StringBuilder();
                             for (int i = 1; i < event.getMessage().getContentRaw().split(" ").length; i++) {
@@ -109,7 +102,6 @@ public class CommandListener extends ListenerAdapter {
 
                     try {
                         command.getExecutor().execute(new CommandEvent(event.getGuild(), message.toString().trim(), event, event.getJDA(), event.getMember(), event.getChannel()));
-                        System.out.println("[CommandHandler] Command Executed Normally");
                     } catch (SQLException exception) {
                         exception.printStackTrace();
                     }

@@ -13,7 +13,7 @@ import org.kowlintech.utils.command.objects.CommandExecutor;
 public enum EnumCommand {
 
     FOODMEME(new FoodMemeCommand(), new String[]{"fm"}),
-    GAYT(new Gay(), new String[]{}),
+    GAY(new Gay(), new String[]{}),
     INSULT(new InsultCommand(), new String[]{}),
     LAMBSAUCE(new LambSauceCommand(), new String[]{}),
     RPS(new RPSCommand(), new String[]{}),
@@ -29,6 +29,7 @@ public enum EnumCommand {
     VOTE(new VoteCommand(), new String[]{}),
     BAN(new BanCommand(), new String[]{}),
     KICK(new KickCommand(), new String[]{}),
+    PURGE(new PurgeCommand(), new String[]{}),
     EVAL(new EvalCommand(), new String[]{}),
     MANAGECHANGELOG(new ManageChangelogCommand(), new String[]{"mchangelog", "mcl"}),
     MANAGEINSULTS(new ManageInsultsCommand(), new String[]{});
