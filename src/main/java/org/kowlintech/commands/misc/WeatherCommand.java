@@ -55,6 +55,7 @@ public class WeatherCommand implements CommandExecutor {
                     eb.addField("Temperature", String.format("%s °%s (Min: %s °%s, Max: %s °%s)", jsonObject.getJSONObject("main").getString("temp"), ab, jsonObject.getJSONObject("main").getString("temp_min"), ab, jsonObject.getJSONObject("main").getString("temp_max"), ab), true);
                     eb.addField("Humidity", jsonObject.getJSONObject("main").getString("humidity") + "%", true);
                     eb.addField("Pressure", jsonObject.getJSONObject("main").getString("pressure"), true);
+                    eb.setFooter("Want to change the temperature unit? Do g.settings tempunit <imperial/metric>");
                     event.reply(eb.build());
                 } catch (Exception ex) {
                     event.reply(EmbedHelper.buildErrorEmbed("That isn't a valid city."));
