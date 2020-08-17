@@ -5,6 +5,7 @@ import org.kowlintech.commands.misc.*;
 import org.kowlintech.commands.moderation.BanCommand;
 import org.kowlintech.commands.moderation.KickCommand;
 import org.kowlintech.commands.moderation.PurgeCommand;
+import org.kowlintech.commands.moderation.SettingsCommand;
 import org.kowlintech.commands.owner.EvalCommand;
 import org.kowlintech.commands.owner.ManageChangelogCommand;
 import org.kowlintech.commands.owner.ManageInsultsCommand;
@@ -27,9 +28,11 @@ public enum EnumCommand {
     SUPPORT(new SupportCommand(), new String[]{}),
     UPTIME(new UptimeCommand(), new String[]{}),
     VOTE(new VoteCommand(), new String[]{}),
+    WEATHER(new WeatherCommand(), new String[]{"we"}),
     BAN(new BanCommand(), new String[]{}),
     KICK(new KickCommand(), new String[]{}),
     PURGE(new PurgeCommand(), new String[]{}),
+    SETTINGS(new SettingsCommand(), new String[]{}),
     EVAL(new EvalCommand(), new String[]{}),
     MANAGECHANGELOG(new ManageChangelogCommand(), new String[]{"mchangelog", "mcl"}),
     MANAGEINSULTS(new ManageInsultsCommand(), new String[]{});

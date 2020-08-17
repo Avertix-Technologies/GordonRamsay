@@ -85,7 +85,8 @@ public class GordonRamsay extends ListenerAdapter {
     private static void checkTables() throws SQLException {
         Statement st = connection.createStatement();
         st.execute("CREATE TABLE IF NOT EXISTS insults (id SERIAL PRIMARY KEY, insult TEXT NOT NULL UNIQUE);");
-        st.execute("CREATE TABLE IF NOT EXISTS changelog(timeadded BIGINT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL);");
+        st.execute("CREATE TABLE IF NOT EXISTS changelog (timeadded BIGINT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL);");
+        st.execute("CREATE TABLE IF NOT EXISTS settings (guildid BIGINT NOT NULL, temperatureunit TEXT NOT NULL)");
     }
 
     private static void prepareInsults() throws SQLException {
