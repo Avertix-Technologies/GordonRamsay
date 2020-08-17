@@ -38,10 +38,8 @@ public class CommandListener extends ListenerAdapter {
                     Annotation annotation = command.getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
                     org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
 
-                    if (cmd.category().equals(Category.OWNER)) {
-                        if(!GordonRamsay.devIds.contains(event.getAuthor().getId())) {
-                            event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();
-                        }
+                    if (cmd.category().equals(Category.OWNER) && !GordonRamsay.devIds.contains(event.getAuthor().getId())) {
+                        event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();
                         return;
                     }
 

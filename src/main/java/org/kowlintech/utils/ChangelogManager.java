@@ -43,11 +43,15 @@ public class ChangelogManager {
     }
 
     public IChangelogMessage editMessage(long timeAdded, String newTitle, String newDescription) throws SQLException {
-        PreparedStatement st = GordonRamsay.getDatabaseConnection().prepareStatement("UPDATE changelog SET title=? AND description=? WHERE timeadded=?");
+        PreparedStatement st = GordonRamsay.getDatabaseConnection().prepareStatement("UPDATE changelog SET title=? WHERE timeadded=?");
         st.setString(1, newTitle);
-        st.setString(2, newDescription);
-        st.setLong(3, timeAdded);
+        st.setLong(2, timeAdded);
         st.execute();
+
+        PreparedStatement st1 = GordonRamsay.getDatabaseConnection().prepareStatement("UPDATE changelog SET description=? WHERE timeadded=?");
+        st1.setString(1, newDescription);
+        st1.setLong(2, timeAdded);
+        st1.execute();
 
         return new ChangelogMessage(timeAdded, newTitle, newDescription);
     }
