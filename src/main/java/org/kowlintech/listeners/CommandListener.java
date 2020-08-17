@@ -34,7 +34,7 @@ public class CommandListener extends ListenerAdapter {
                 for (String alias : command.getAliases()) {
                     aliases.add(alias);
                 }
-                if (event.getMessage().getContentRaw().startsWith((config.getPrefix() + command.name()).trim().toLowerCase()) || event.getMessage().getContentRaw().startsWith("<@" + event.getJDA().getSelfUser().getId() + ">" + command.name().trim().toLowerCase()) || event.getMessage().getContentRaw().startsWith("<!@" + event.getJDA().getSelfUser().getId() + ">" + command.name().trim().toLowerCase())) {
+                if (event.getMessage().getContentRaw().startsWith((config.getPrefix() + command.name()).trim().toLowerCase())) {
                     Annotation annotation = command.getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
                     org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
 

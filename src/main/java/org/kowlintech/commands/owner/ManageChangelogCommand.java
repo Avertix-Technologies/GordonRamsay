@@ -25,7 +25,7 @@ public class ManageChangelogCommand implements CommandExecutor {
         if(args[0].trim().equals("create")) {
             String[] args1 = event.getArgs().split("create");
             String[] args2 = args1[1].split(" | ");
-            changelogManager.createMessage(args2[1].trim(), args2[3].trim());
+            changelogManager.createMessage(args2[0].trim(), args2[2].trim());
             EmbedBuilder eb = new EmbedBuilder();
             eb.setTitle("Success!");
             eb.setColor(Global.COLOR);
@@ -35,7 +35,7 @@ public class ManageChangelogCommand implements CommandExecutor {
             if(changelogManager.getMessage(Long.parseLong(args[1])) != null) {
                 String[] args1 = event.getArgs().split("edit");
                 String[] args2 = args1[1].split(" | ");
-                changelogManager.editMessage(Long.parseLong(args[1]), args2[2].trim(), args2[3].trim());
+                changelogManager.editMessage(Long.parseLong(args[1]), args2[0].trim(), args2[1].trim());
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setTitle("Success!");
                 eb.setDescription("Changelog message has been edited!");
