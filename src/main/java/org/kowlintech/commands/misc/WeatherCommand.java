@@ -1,8 +1,5 @@
 package org.kowlintech.commands.misc;
 
-import kong.unirest.Callback;
-import kong.unirest.HttpResponse;
-import kong.unirest.JsonNode;
 import kong.unirest.Unirest;
 import kong.unirest.json.JSONObject;
 import net.dv8tion.jda.api.EmbedBuilder;
@@ -25,9 +22,11 @@ public class WeatherCommand implements CommandExecutor {
             event.reply("You gotta provide a city, you fucking donkey!");
             return;
         }
-        String apiKey = "608a7239e3dec30f4bf3fe0628b19ea5";
+        String apiKey = "e4e4d3476bf4449b8c2200515201808";
         String tempSystem;
         String ab;
+        String inmm;
+        String speed;
         if(SettingsManager.getGuildTemperatureUnit(event.getGuild().getIdLong()) == null) {
             SettingsManager.setGuildTemperatureUnit(event.getGuild().getIdLong(), "imperial");
             tempSystem = "imperial";
@@ -37,31 +36,37 @@ public class WeatherCommand implements CommandExecutor {
         }
         if(tempSystem.contains("metric")) {
             ab = "C";
+            inmm = "mm";
+            speed = "kph";
         } else {
             ab = "F";
+            inmm = "in";
+            speed = "mph";
         }
-        Unirest.get(String.format("http://api.openweathermap.org/data/2.5/weather?appid=%s&q=%s&units=%s", apiKey, event.getArgs().replace(" ", "%20"), tempSystem)).asJsonAsync(new Callback<JsonNode>() {
-            @Override
-            public void completed(HttpResponse<JsonNode> response) {
-                try {
-                    EmbedBuilder eb = new EmbedBuilder();
-                    JSONObject jsonObject = response.getBody().getObject();
-                    String cityName = jsonObject.getString("name");
-                    eb.setTitle("Here's the weather for " + cityName + ", you fucking donkey!");
-                    eb.setColor(Global.COLOR);
+        Unirest.get(String.format("http://api.weatherapi.com/v1/current.json?key=%s&q=%s", apiKey, event.getArgs().replace(" ", "%20"))).asJsonAsync(response -> {
+            try {
+                EmbedBuilder eb = new EmbedBuilder();
+                JSONObject jsonObject = response.getBody().getObject();
+                String cityName = jsonObject.getJSONObject("location").getString("name");
+                eb.setTitle("Here's the weather for " + cityName + ", you fucking donkey!");
+                eb.setColor(Global.COLOR);
+                eb.setDescription("**" + jsonObject.getJSONObject("current").getJSONObject("condition").getString("text") + "**");
 
-                    eb.addField("Coordinates", "**Longitude:** " + jsonObject.getJSONObject("coord").getString("lon") + ", **Latitude:** " + jsonObject.getJSONObject("coord").getString("lat"), true);
-                    eb.addField("Country", jsonObject.getJSONObject("sys").getString("country"), true);
-                    eb.addField("Temperature", String.format("%s °%s (Min: %s °%s, Max: %s °%s)", jsonObject.getJSONObject("main").getString("temp"), ab, jsonObject.getJSONObject("main").getString("temp_min"), ab, jsonObject.getJSONObject("main").getString("temp_max"), ab), true);
-                    eb.addField("Humidity", jsonObject.getJSONObject("main").getString("humidity") + "%", true);
-                    eb.addField("Pressure", jsonObject.getJSONObject("main").getString("pressure"), true);
-                    eb.setFooter("Want to change the temperature unit? Do g.settings tempunit <imperial/metric>");
-                    event.reply(eb.build());
-                } catch (Exception ex) {
-                    event.reply(EmbedHelper.buildErrorEmbed("That isn't a valid city."));
-                    ex.printStackTrace();
-                    return;
-                }
+                eb.addField("Current Time", jsonObject.getJSONObject("location").getString("localtime") + " (Timezone: " + jsonObject.getJSONObject("location").getString("tz_id") + ")", true);
+                eb.addField("Coordinates", "**Longitude:** " + jsonObject.getJSONObject("location").getString("lon") + ", **Latitude:** " + jsonObject.getJSONObject("location").getString("lat"), true);
+                eb.addField("Region", jsonObject.getJSONObject("location").getString("region") + " (" + jsonObject.getJSONObject("location").getString("country") + ")", true);
+                eb.addField("Temperature", String.format("%s °%s (Feels like: %s °%s)", jsonObject.getJSONObject("current").getString("temp_" + ab.toLowerCase()), ab, jsonObject.getJSONObject("current").getString("feelslike_" + ab.toLowerCase()), ab), true);
+                eb.addField("Humidity", jsonObject.getJSONObject("current").getString("humidity") + "%", true);
+                eb.addField("Estimated Precipitation Today", String.format("%s %s", jsonObject.getJSONObject("current").getString("precip_" + inmm), (inmm == "mm" ? "Millimeters" : "Inches")), true);
+                eb.addField("Wind Speed", String.format("%s %s", jsonObject.getJSONObject("current").getString("wind_" + speed), speed.toUpperCase()), true);
+                eb.addField("Wind Direction", jsonObject.getJSONObject("current").getString("wind_dir"), true);
+                eb.setFooter("Want to change the unit system? Do g.settings tempunit <imperial/metric> | Last Updated: " + jsonObject.getJSONObject("current").getString("last_updated"));
+                eb.setThumbnail("https://" + jsonObject.getJSONObject("current").getJSONObject("condition").getString("icon").replace("//", ""));
+                event.reply(eb.build());
+            } catch (Exception ex) {
+                event.reply(EmbedHelper.buildErrorEmbed("That isn't a valid city."));
+                ex.printStackTrace();
+                return;
             }
         });
     }
