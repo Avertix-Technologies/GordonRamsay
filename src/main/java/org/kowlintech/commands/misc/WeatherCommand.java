@@ -43,10 +43,12 @@ public class WeatherCommand implements CommandExecutor {
             inmm = "in";
             speed = "mph";
         }
-        Unirest.get(String.format("http://api.weatherapi.com/v1/current.json?key=%s&q=%s", apiKey, event.getArgs().replace(" ", "%20"))).asJsonAsync(response -> {
+        Unirest.get(String.format("http://api.weatherapi.com/v1/forecast.json?key=%s&q=%s", apiKey, event.getArgs().replace(" ", "%20"))).asJsonAsync(response -> {
             try {
                 EmbedBuilder eb = new EmbedBuilder();
                 JSONObject jsonObject = response.getBody().getObject();
+                JSONObject dayForecastObject = jsonObject.getJSONObject("forecast").getJSONArray("forecastday").getJSONObject(0).getJSONObject("day");
+                JSONObject astroForecastObject = jsonObject.getJSONObject("forecast").getJSONArray("forecastday").getJSONObject(0).getJSONObject("astro");
                 String cityName = jsonObject.getJSONObject("location").getString("name");
                 eb.setTitle("Here's the weather for " + cityName + ", you fucking donkey!");
                 eb.setColor(Global.COLOR);
@@ -55,11 +57,12 @@ public class WeatherCommand implements CommandExecutor {
                 eb.addField("Current Time", jsonObject.getJSONObject("location").getString("localtime") + " (Timezone: " + jsonObject.getJSONObject("location").getString("tz_id") + ")", true);
                 eb.addField("Coordinates", "**Longitude:** " + jsonObject.getJSONObject("location").getString("lon") + ", **Latitude:** " + jsonObject.getJSONObject("location").getString("lat"), true);
                 eb.addField("Region", jsonObject.getJSONObject("location").getString("region") + " (" + jsonObject.getJSONObject("location").getString("country") + ")", true);
-                eb.addField("Temperature", String.format("%s °%s (Feels like: %s °%s)", jsonObject.getJSONObject("current").getString("temp_" + ab.toLowerCase()), ab, jsonObject.getJSONObject("current").getString("feelslike_" + ab.toLowerCase()), ab), true);
+                eb.addField("Temperature", String.format("%s °%s (Feels like: %s °%s) (Min: %s °%s, Max: %s °%s)", jsonObject.getJSONObject("current").getString("temp_" + ab.toLowerCase()), ab, jsonObject.getJSONObject("current").getString("feelslike_" + ab.toLowerCase()), ab, dayForecastObject.getString("mintemp_" + ab.toLowerCase()), ab, dayForecastObject.getString("maxtemp_" + ab.toLowerCase()), ab), true);
                 eb.addField("Humidity", jsonObject.getJSONObject("current").getString("humidity") + "%", true);
-                eb.addField("Estimated Precipitation Today", String.format("%s %s", jsonObject.getJSONObject("current").getString("precip_" + inmm), (inmm == "mm" ? "Millimeters" : "Inches")), true);
-                eb.addField("Wind Speed", String.format("%s %s", jsonObject.getJSONObject("current").getString("wind_" + speed), speed.toUpperCase()), true);
+                eb.addField("Estimated Precipitation", String.format("%s %s", jsonObject.getJSONObject("current").getString("precip_" + inmm), (inmm == "mm" ? "Millimeters" : "Inches")), true);
+                eb.addField("Wind Speed", String.format("%s %s with gusts up to %s %s", jsonObject.getJSONObject("current").getString("wind_" + speed), speed.toUpperCase(), dayForecastObject.getString("maxwind_" + speed), speed.toUpperCase()), true);
                 eb.addField("Wind Direction", jsonObject.getJSONObject("current").getString("wind_dir"), true);
+                eb.addField("Sun", "**Sunrise:** " + astroForecastObject.getString("sunrise") + "\n**Sunset:** " + astroForecastObject.getString("sunset"), true);
                 eb.setFooter("Want to change the unit system? Do g.settings tempunit <imperial/metric> | Last Updated: " + jsonObject.getJSONObject("current").getString("last_updated"));
                 eb.setThumbnail("https://" + jsonObject.getJSONObject("current").getJSONObject("condition").getString("icon").replace("//", ""));
                 event.reply(eb.build());
