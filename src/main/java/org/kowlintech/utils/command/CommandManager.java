@@ -1,28 +1,29 @@
 package org.kowlintech.utils.command;
 
+import org.kowlintech.GordonRamsay;
 import org.kowlintech.utils.command.objects.Command;
-import org.kowlintech.utils.command.objects.enums.EnumCommand;
+import org.kowlintech.utils.command.objects.ObjectCommand;
 
-import java.lang.annotation.Annotation;
 import java.util.ArrayList;
 
 public class CommandManager {
 
     public ArrayList<Command> getCommands() {
         ArrayList<Command> list = new ArrayList<>();
-        for(EnumCommand command : EnumCommand.values()) {
-            Annotation annotation = command.getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
-            org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
-
-            list.add(cmd);
+        for(ObjectCommand command : GordonRamsay.getCommands()) {
+            list.add(command.getInterface());
         }
 
         return list;
     }
 
     public Command getCommand(String command) {
-        Annotation annotation = EnumCommand.valueOf(command.toUpperCase()).getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
-        org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
-        return cmd;
+        for(ObjectCommand command1 : GordonRamsay.getCommands()) {
+            if(command1.getInterface().name() == command.trim().toLowerCase()) {
+                return command1.getInterface();
+            }
+        }
+
+        return null;
     }
 }

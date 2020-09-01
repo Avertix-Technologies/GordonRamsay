@@ -14,14 +14,20 @@ import org.kowlintech.listeners.JoinLeaveListener;
 import org.kowlintech.utils.ChangelogManager;
 import org.kowlintech.utils.InsultManager;
 import org.kowlintech.utils.command.CommandManager;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.ObjectCommand;
 import org.postgresql.util.PSQLException;
+import org.reflections.Reflections;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
+import java.lang.annotation.Annotation;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 public class GordonRamsay extends ListenerAdapter {
 
@@ -31,8 +37,9 @@ public class GordonRamsay extends ListenerAdapter {
     private static CommandManager commandManager;
     public static ArrayList<String> devIds;
     private static ChangelogManager changelogManager;
+    private static List<ObjectCommand> commands;
 
-    public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException {
+    public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         Config config = new Config();
 
         EventWaiter waiter = new EventWaiter();
@@ -42,6 +49,7 @@ public class GordonRamsay extends ListenerAdapter {
         devIds = new ArrayList<>();
         devIds.add("525050292400685077");
         devIds.add("363850072309497876");
+        commands = new ArrayList<>();
 
         jda = new JDABuilder(AccountType.BOT)
                 .setToken(config.getToken())
@@ -72,6 +80,7 @@ public class GordonRamsay extends ListenerAdapter {
             prepareInsults();
         } catch (Exception ex) {}
         changelogManager = new ChangelogManager(jda);
+        registerCommands();
     }
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
@@ -110,6 +119,18 @@ public class GordonRamsay extends ListenerAdapter {
         return array;
     }
 
+    private static void registerCommands() throws IllegalAccessException, InstantiationException {
+        Reflections reflections = new Reflections("org.kowlintech.commands");
+
+        for(Class classc : reflections.getSubTypesOf(CommandExecutor.class)) {
+            CommandExecutor executor = (CommandExecutor) classc.newInstance();
+            Annotation annotation = executor.getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
+            org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
+            commands.add(new ObjectCommand(executor, cmd));
+        }
+        System.out.println("Registered Commands! (Count: " + commands.size() + ")");
+    }
+
     public static CommandManager getCommandManager() {
         return commandManager;
     }
@@ -120,5 +141,9 @@ public class GordonRamsay extends ListenerAdapter {
 
     public static ChangelogManager getChangelogManager() {
         return changelogManager;
+    }
+
+    public static List<ObjectCommand> getCommands() {
+        return commands;
     }
 }

@@ -31,11 +31,13 @@ C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowli
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\fun\LambSauceCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\Insult.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\SupportCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\ObjectCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\SettingsManager.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\VoteCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\InfoCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\IInsult.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\SocialCommand.java
+C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\owner\EmbedCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\owner\ManageChangelogCommand.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\utils\command\objects\CommandEvent.java
 C:\Users\marti\Desktop\IntelliProjects\GordonRamsay-Java\src\main\java\org\kowlintech\commands\misc\InviteCommand.java

@@ -6,19 +6,17 @@ import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.kowlintech.Config;
 import org.kowlintech.GordonRamsay;
-import org.kowlintech.utils.EmbedHelper;
+import org.kowlintech.utils.command.objects.Command;
 import org.kowlintech.utils.command.objects.CommandEvent;
+import org.kowlintech.utils.command.objects.ObjectCommand;
 import org.kowlintech.utils.command.objects.enums.Category;
-import org.kowlintech.utils.command.objects.enums.EnumCommand;
 import org.kowlintech.utils.command.objects.enums.PermissionType;
 import org.kowlintech.utils.constants.Global;
 
 import java.awt.*;
-import java.lang.annotation.Annotation;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
 
 public class CommandListener extends ListenerAdapter {
 
@@ -29,16 +27,10 @@ public class CommandListener extends ListenerAdapter {
         if(!event.getMessage().getContentRaw().startsWith(config.getPrefix()) || event.getAuthor().isBot()) {
             return;
         }
-        for(EnumCommand command : EnumCommand.values()) {
+        for(ObjectCommand command : GordonRamsay.getCommands()) {
             try {
-                ArrayList<String> aliases = new ArrayList<>();
-                for (String alias : command.getAliases()) {
-                    aliases.add(alias);
-                }
-                if (event.getMessage().getContentRaw().startsWith((config.getPrefix() + command.name()).trim().toLowerCase())) {
-                    Annotation annotation = command.getExecutor().getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
-                    org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
-
+                if (event.getMessage().getContentRaw().startsWith((config.getPrefix() + command.getInterface().name()).trim().toLowerCase())) {
+                    Command cmd = command.getInterface();
                     if (cmd.category().equals(Category.OWNER) && !GordonRamsay.devIds.contains(event.getAuthor().getId())) {
                         event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();
                         return;
@@ -110,7 +102,7 @@ public class CommandListener extends ListenerAdapter {
                     event.getAuthor().openPrivateChannel().queue(channel -> {
                         EmbedBuilder eb = new EmbedBuilder();
                         eb.setTitle("Command Error");
-                        eb.setDescription("It looks like I'm not able to send the response for `" + command.name().toLowerCase() + "` to that channel. If you're an administrator, please change the permissions in that channel. If not, please contact an administrator with this issue.");
+                        eb.setDescription("It looks like I'm not able to send the response for `" + command.getInterface().name().toLowerCase() + "` to that channel. If you're an administrator, please change the permissions in that channel. If not, please contact an administrator with this issue.");
                         eb.setColor(Color.RED);
                         eb.setTimestamp(LocalDateTime.now(ZoneId.systemDefault()));
                         try {
@@ -124,7 +116,7 @@ public class CommandListener extends ListenerAdapter {
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setTitle("Command Error");
                 eb.setDescription("```" + ex.toString() + "```");
-                eb.addField("Command Name", command.name().toLowerCase(), true);
+                eb.addField("Command Name", command.getInterface().name().toLowerCase(), true);
                 eb.addField("Executor", event.getAuthor().getName() + "#" + event.getAuthor().getDiscriminator() + " (" + event.getAuthor().getId() + ")", true);
                 eb.addField("Guild", event.getGuild().getName() + " (" + event.getGuild().getId() + ")", true);
                 eb.addField("Channel", event.getChannel().getName() + " (" + event.getChannel().getId() + ")", true);
