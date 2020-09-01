@@ -6,6 +6,7 @@ import org.kowlintech.commands.moderation.BanCommand;
 import org.kowlintech.commands.moderation.KickCommand;
 import org.kowlintech.commands.moderation.PurgeCommand;
 import org.kowlintech.commands.moderation.SettingsCommand;
+import org.kowlintech.commands.owner.EmbedCommand;
 import org.kowlintech.commands.owner.EvalCommand;
 import org.kowlintech.commands.owner.ManageChangelogCommand;
 import org.kowlintech.commands.owner.ManageInsultsCommand;
@@ -33,6 +34,7 @@ public enum EnumCommand {
     KICK(new KickCommand(), new String[]{}),
     PURGE(new PurgeCommand(), new String[]{}),
     SETTINGS(new SettingsCommand(), new String[]{}),
+    EMBED(new EmbedCommand(), new String[]{}),
     EVAL(new EvalCommand(), new String[]{}),
     MANAGECHANGELOG(new ManageChangelogCommand(), new String[]{"mchangelog", "mcl"}),
     MANAGEINSULTS(new ManageInsultsCommand(), new String[]{});
