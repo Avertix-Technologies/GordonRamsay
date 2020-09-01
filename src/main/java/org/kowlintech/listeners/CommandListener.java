@@ -2,6 +2,7 @@ package org.kowlintech.listeners;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.kowlintech.Config;
 import org.kowlintech.GordonRamsay;
@@ -105,6 +106,21 @@ public class CommandListener extends ListenerAdapter {
                     }
                 }
             } catch (Exception ex) {
+                if(ex instanceof InsufficientPermissionException) {
+                    event.getAuthor().openPrivateChannel().queue(channel -> {
+                        EmbedBuilder eb = new EmbedBuilder();
+                        eb.setTitle("Command Error");
+                        eb.setDescription("It looks like I'm not able to send the response for `" + command.name().toLowerCase() + "` to that channel. If you're an administrator, please change the permissions in that channel. If not, please contact an administrator with this issue.");
+                        eb.setColor(Color.RED);
+                        eb.setTimestamp(LocalDateTime.now(ZoneId.systemDefault()));
+                        try {
+                            channel.sendMessage(eb.build());
+                        } catch (Exception ex1) {
+                            return;
+                        }
+                    });
+                    return;
+                }
                 EmbedBuilder eb = new EmbedBuilder();
                 eb.setTitle("Command Error");
                 eb.setDescription("```" + ex.toString() + "```");
