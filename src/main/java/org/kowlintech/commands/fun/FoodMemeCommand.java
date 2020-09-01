@@ -33,7 +33,6 @@ public class FoodMemeCommand implements CommandExecutor {
             } else {
                 title = post.title();
             }
-            String cutTitle = post.title().substring(0, 253);
             eb.setTitle(title);
             eb.setImage(post.mediaUrl());
         } else if(post.isNsfw()) {
