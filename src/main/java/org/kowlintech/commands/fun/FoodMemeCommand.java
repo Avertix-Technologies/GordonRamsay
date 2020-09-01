@@ -27,8 +27,14 @@ public class FoodMemeCommand implements CommandExecutor {
         MemePost post;
         post = Reddit.getRandomMedia(sub);
         if(!post.isNsfw()) {
+            String title;
+            if(post.title().split("").length >= 256) {
+                title = post.title().substring(0, 253) + "...";
+            } else {
+                title = post.title();
+            }
             String cutTitle = post.title().substring(0, 253);
-            eb.setTitle((cutTitle.split("").length == 253 ? post.title() + "..." : post.title()));
+            eb.setTitle(title);
             eb.setImage(post.mediaUrl());
         } else if(post.isNsfw()) {
             MemePost post1;
