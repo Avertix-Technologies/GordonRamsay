@@ -42,5 +42,14 @@ public class FoodMemeCommand implements CommandExecutor {
             eb.setImage(post1.mediaUrl());
         }
         event.reply(eb.build());
+        String[] strToCheck = new String[]{"png", "jpeg", "jpg"};
+        if(post.mediaUrl() != "" && post.mediaUrl() != null) {
+            for(String str : strToCheck) {
+                if(post.mediaUrl().contains(str)) {
+                    return;
+                }
+            }
+            event.reply("**Post Media:** <" + post.mediaUrl() + ">");
+        }
     }
 }
