@@ -106,7 +106,7 @@ public class CommandListener extends ListenerAdapter {
                         eb.setColor(Color.RED);
                         eb.setTimestamp(LocalDateTime.now(ZoneId.systemDefault()));
                         try {
-                            channel.sendMessage(eb.build());
+                            channel.sendMessage(eb.build()).queue();
                         } catch (Exception ex1) {
                             return;
                         }

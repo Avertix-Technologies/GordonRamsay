@@ -25,7 +25,6 @@ org\kowlintech\utils\IInsult.class
 org\kowlintech\commands\misc\PingCommand.class
 org\kowlintech\Config.class
 org\kowlintech\utils\command\objects\Command.class
-org\kowlintech\utils\command\objects\enums\EnumCommand.class
 org\kowlintech\commands\fun\FoodMemeCommand.class
 org\kowlintech\utils\command\CommandManager.class
 org\kowlintech\utils\command\objects\CommandEvent.class
