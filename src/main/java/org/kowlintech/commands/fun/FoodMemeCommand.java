@@ -9,6 +9,7 @@ import org.kowlintech.utils.constants.Global;
 import org.kowlintech.utils.reddit.MemePost;
 import org.kowlintech.utils.reddit.Reddit;
 
+import java.time.Instant;
 import java.util.Random;
 
 @Command(name = "foodmeme", category = Category.FUN, description = "Shows you a food meme from r/foodmemes or r/gordonramsaymemes")
@@ -41,6 +42,7 @@ public class FoodMemeCommand implements CommandExecutor {
             eb.setTitle(post1.title());
             eb.setImage(post1.mediaUrl());
         }
+        eb.setTimestamp(Instant.now());
         event.reply(eb.build());
         String[] strToCheck = new String[]{"png", "jpeg", "jpg"};
         if(post.mediaUrl() != "" && post.mediaUrl() != null) {

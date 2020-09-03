@@ -1,10 +1,7 @@
 package org.kowlintech;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import net.dv8tion.jda.api.AccountType;
-import net.dv8tion.jda.api.EmbedBuilder;
-import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -54,6 +51,7 @@ public class GordonRamsay extends ListenerAdapter {
         jda = new JDABuilder(AccountType.BOT)
                 .setToken(config.getToken())
 
+                .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .setActivity(Activity.watching("for " + config.getPrefix() + "help"))
 
                 .addEventListeners(
@@ -61,6 +59,7 @@ public class GordonRamsay extends ListenerAdapter {
                         new JoinLeaveListener(),
                         new CommandListener()
                 )
+                .useSharding(0, 1)
                 .build();
 
         try {

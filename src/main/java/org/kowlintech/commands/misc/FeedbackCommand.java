@@ -9,6 +9,7 @@ import org.kowlintech.utils.command.objects.enums.Category;
 import org.kowlintech.utils.constants.Global;
 
 import java.awt.*;
+import java.time.Instant;
 
 @Command(name = "feedback", category = Category.MISCELLANEOUS, description = "Sends feedback to the bot developers", args = "<feedback>")
 public class FeedbackCommand implements CommandExecutor {
@@ -43,6 +44,7 @@ public class FeedbackCommand implements CommandExecutor {
         eb1.setDescription("Your feedback has been submitted.");
         eb1.setColor(Color.GREEN);
         eb1.setFooter("If you abuse this command, you will lose your ability to send feedback.");
+        eb1.setTimestamp(Instant.now());
         event.reply(eb1.build());
     }
 }

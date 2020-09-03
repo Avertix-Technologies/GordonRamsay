@@ -11,6 +11,7 @@ import org.kowlintech.utils.command.objects.enums.Category;
 import org.kowlintech.utils.constants.Global;
 
 import java.sql.SQLException;
+import java.time.Instant;
 import java.util.ArrayList;
 
 @Command(name = "changelog", description = "Views the changelog.", category = Category.MISCELLANEOUS)
@@ -31,6 +32,7 @@ public class Changelog implements CommandExecutor {
                 eb.addField((eb.getFields().size() + 1) + ". " + message.getTitle(), message.getDescription(), false);
             }
         }
+        eb.setTimestamp(Instant.now());
         event.reply(eb.build());
     }
 }
