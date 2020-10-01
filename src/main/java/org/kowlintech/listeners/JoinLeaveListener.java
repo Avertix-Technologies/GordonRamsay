@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.kowlintech.GordonRamsay;
 import org.kowlintech.utils.constants.Global;
 
 import java.awt.*;
@@ -59,6 +60,8 @@ public class JoinLeaveListener extends ListenerAdapter {
         eb.setTimestamp(Instant.now());
 
         log.sendMessage(eb.build()).queue();
+
+        GordonRamsay.dblAPI.setStats(event.getJDA().getGuilds().size());
     }
 
     @Override
@@ -82,6 +85,8 @@ public class JoinLeaveListener extends ListenerAdapter {
         eb.setTimestamp(Instant.now());
 
         log.sendMessage(eb.build()).queue();
+
+        GordonRamsay.dblAPI.setStats(event.getJDA().getGuilds().size());
     }
 
     @Override
@@ -111,5 +116,7 @@ public class JoinLeaveListener extends ListenerAdapter {
                 }
             }
         }
+
+        GordonRamsay.dblAPI.setStats(event.getJDA().getGuilds().size());
     }
 }

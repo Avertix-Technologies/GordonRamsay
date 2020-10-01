@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.apache.commons.collections4.map.LRUMap;
+import org.discordbots.api.client.DiscordBotListAPI;
 import org.kowlintech.listeners.CommandListener;
 import org.kowlintech.listeners.JoinLeaveListener;
 import org.kowlintech.utils.ChangelogManager;
@@ -35,6 +36,7 @@ public class GordonRamsay extends ListenerAdapter {
     public static ArrayList<String> devIds;
     private static ChangelogManager changelogManager;
     private static List<ObjectCommand> commands;
+    public static DiscordBotListAPI dblAPI;
 
     public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         Config config = new Config();
@@ -80,6 +82,11 @@ public class GordonRamsay extends ListenerAdapter {
         } catch (Exception ex) {}
         changelogManager = new ChangelogManager(jda);
         registerCommands();
+
+        dblAPI = new DiscordBotListAPI.Builder()
+                .token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUyODk4NDU1ODYyOTAyNzg0MSIsImJvdCI6dHJ1ZSwiaWF0IjoxNjAxNTkzNzI4fQ.6Xt6iiBM-0m7UpOBxicPCCYPPSrH0J_Ok3771W43nm0")
+                .botId(jda.getSelfUser().getId())
+                .build();
     }
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
