@@ -54,8 +54,6 @@ public class GordonRamsay extends ListenerAdapter {
         commands = new ArrayList<>();
 
         JDABuilder builder = JDABuilder.createDefault(config.getToken());
-        builder.setEnabledIntents(Arrays.asList(GatewayIntent.values()));
-        builder.setMemberCachePolicy(MemberCachePolicy.ALL);
         builder.addEventListeners(
                 waiter,
                 new JoinLeaveListener(),
