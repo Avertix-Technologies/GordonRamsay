@@ -5,6 +5,8 @@ import net.dv8tion.jda.api.*;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import org.apache.commons.collections4.map.LRUMap;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.kowlintech.listeners.CommandListener;
@@ -24,6 +26,7 @@ import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -50,19 +53,17 @@ public class GordonRamsay extends ListenerAdapter {
         devIds.add("363850072309497876");
         commands = new ArrayList<>();
 
-        jda = new JDABuilder(AccountType.BOT)
-                .setToken(config.getToken())
-
-                .setStatus(OnlineStatus.DO_NOT_DISTURB)
-                .setActivity(Activity.watching("for " + config.getPrefix() + "help"))
-
-                .addEventListeners(
-                        waiter,
-                        new JoinLeaveListener(),
-                        new CommandListener()
-                )
-                .useSharding(0, 1)
-                .build();
+        JDABuilder builder = JDABuilder.createDefault(config.getToken());
+        builder.setEnabledIntents(Arrays.asList(GatewayIntent.values()));
+        builder.setMemberCachePolicy(MemberCachePolicy.ALL);
+        builder.addEventListeners(
+                waiter,
+                new JoinLeaveListener(),
+                new CommandListener()
+        );
+        jda = builder.build();
+        jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
+        jda.getPresence().setActivity(Activity.watching("for " + config.getPrefix() + "help"));
 
         try {
             openDatabaseConnection();
