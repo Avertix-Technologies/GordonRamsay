@@ -25,10 +25,8 @@ import java.lang.annotation.Annotation;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 import java.util.List;
-import java.util.Set;
 
 public class GordonRamsay extends ListenerAdapter {
 
@@ -54,6 +52,8 @@ public class GordonRamsay extends ListenerAdapter {
         commands = new ArrayList<>();
 
         JDABuilder builder = JDABuilder.createDefault(config.getToken());
+        builder.enableIntents(GatewayIntent.GUILD_MEMBERS);
+        builder.setMemberCachePolicy(MemberCachePolicy.ALL);
         builder.addEventListeners(
                 waiter,
                 new JoinLeaveListener(),
