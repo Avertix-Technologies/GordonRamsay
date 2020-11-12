@@ -18,11 +18,6 @@ import java.time.format.DateTimeFormatter;
 public class JoinLeaveListener extends ListenerAdapter {
 
     @Override
-    public void onGuildReady(GuildReadyEvent event) {
-        event.getGuild().loadMembers();
-    }
-
-    @Override
     public void onGuildJoin(GuildJoinEvent event) {
 
         TextChannel log = event.getJDA().getTextChannelById(Global.JOINLEAVE_LOGS);
