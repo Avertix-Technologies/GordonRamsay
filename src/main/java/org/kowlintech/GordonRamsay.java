@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
 import org.apache.commons.collections4.map.LRUMap;
@@ -55,6 +56,7 @@ public class GordonRamsay extends ListenerAdapter {
         JDABuilder builder = JDABuilder.createDefault(config.getToken());
         builder.setEnabledIntents(Arrays.asList(GatewayIntent.values()));
         builder.setMemberCachePolicy(MemberCachePolicy.ALL);
+        builder.setChunkingFilter(ChunkingFilter.ALL);
         builder.enableCache(CacheFlag.MEMBER_OVERRIDES);
         builder.disableIntents(GatewayIntent.GUILD_PRESENCES);
         builder.addEventListeners(
