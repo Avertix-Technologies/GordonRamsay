@@ -6,6 +6,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.guild.GuildJoinEvent;
 import net.dv8tion.jda.api.events.guild.GuildLeaveEvent;
+import net.dv8tion.jda.api.events.guild.GuildReadyEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.kowlintech.GordonRamsay;
 import org.kowlintech.utils.constants.Global;
@@ -15,6 +16,11 @@ import java.time.Instant;
 import java.time.format.DateTimeFormatter;
 
 public class JoinLeaveListener extends ListenerAdapter {
+
+    @Override
+    public void onGuildReady(GuildReadyEvent event) {
+        event.getGuild().loadMembers();
+    }
 
     @Override
     public void onGuildJoin(GuildJoinEvent event) {
