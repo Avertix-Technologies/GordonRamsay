@@ -4,6 +4,7 @@ public enum Category {
 
     MISCELLANEOUS("Miscellaneous"),
     FUN("Fun"),
+    ECONOMY("Economy"),
     MODERATION("Moderation"),
     OWNER("Owner");
 

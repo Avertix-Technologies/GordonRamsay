@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.TYPE_USE})
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Command {
+public @interface SlashCommand {
 
     String name();
     Category category();

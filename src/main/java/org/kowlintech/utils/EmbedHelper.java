@@ -39,4 +39,11 @@ public class EmbedHelper {
         eb.setColor(Global.COLOR);
         return eb.build();
     }
+
+    public static MessageEmbed buildWaitingEmbed(String description) {
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setDescription(description);
+        eb.setColor(Color.YELLOW);
+        return eb.build();
+    }
 }

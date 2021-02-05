@@ -4,7 +4,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
-import org.kowlintech.Config;
 import org.kowlintech.GordonRamsay;
 import org.kowlintech.utils.command.objects.Command;
 import org.kowlintech.utils.command.objects.CommandEvent;
@@ -14,22 +13,37 @@ import org.kowlintech.utils.command.objects.enums.PermissionType;
 import org.kowlintech.utils.constants.Global;
 
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Properties;
 
 public class CommandListener extends ListenerAdapter {
-
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        Config config = new Config();
+        if(GordonRamsay.getSnipeManager().getGuild(event.getGuild().getIdLong()).isSnipeEnabled()) {
+            GordonRamsay.getSnipeManager().insertMessage(event.getMessage());
+        }
 
-        if(!event.getMessage().getContentRaw().startsWith(config.getPrefix()) || event.getAuthor().isBot()) {
+        Properties prop = new Properties();
+        try {
+            FileInputStream file = new FileInputStream("gordon.properties");
+            prop.load(file);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
+
+        if(!event.getMessage().getContentRaw().startsWith(prop.getProperty("prefix")) || event.getAuthor().isBot()) {
             return;
         }
         for(ObjectCommand command : GordonRamsay.getCommands()) {
             try {
-                if (event.getMessage().getContentRaw().startsWith((config.getPrefix() + command.getInterface().name()).trim().toLowerCase())) {
+                if (event.getMessage().getContentRaw().startsWith((prop.getProperty("prefix") + command.getInterface().name()).trim().toLowerCase())) {
                     Command cmd = command.getInterface();
                     if (cmd.category().equals(Category.OWNER) && !GordonRamsay.devIds.contains(event.getAuthor().getId())) {
                         event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();
@@ -95,6 +109,19 @@ public class CommandListener extends ListenerAdapter {
                         command.getExecutor().execute(new CommandEvent(event.getGuild(), message.toString().trim(), event, event.getJDA(), event.getMember(), event.getChannel()));
                     } catch (SQLException exception) {
                         exception.printStackTrace();
+                    }
+                    return;
+                }
+
+                for(String alias : GordonRamsay.aliases.keySet()) {
+                    if(event.getMessage().getContentRaw().startsWith((prop.getProperty("prefix") + alias))) {
+                        StringBuilder message = new StringBuilder();
+                        for (int i = 1; i < event.getMessage().getContentRaw().split(" ").length; i++) {
+                            message.append(event.getMessage().getContentRaw().split(" ")[i]).append(" ");
+                        }
+
+                        GordonRamsay.aliases.get(alias).getExecutor().execute(new CommandEvent(event.getGuild(), message.toString().trim(), event, event.getJDA(), event.getMember(), event.getChannel()));
+                        return;
                     }
                 }
             } catch (Exception ex) {

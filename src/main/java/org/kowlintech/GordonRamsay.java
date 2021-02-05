@@ -1,11 +1,16 @@
 package org.kowlintech;
 
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
-import net.dv8tion.jda.api.*;
+import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
+import net.dv8tion.jda.api.sharding.DefaultShardManagerBuilder;
+import net.dv8tion.jda.api.sharding.ShardManager;
 import net.dv8tion.jda.api.utils.ChunkingFilter;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
@@ -13,16 +18,19 @@ import org.apache.commons.collections4.map.LRUMap;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.kowlintech.listeners.CommandListener;
 import org.kowlintech.listeners.JoinLeaveListener;
-import org.kowlintech.utils.ChangelogManager;
-import org.kowlintech.utils.InsultManager;
+import org.kowlintech.listeners.SnipeListener;
+import org.kowlintech.utils.*;
 import org.kowlintech.utils.command.CommandManager;
 import org.kowlintech.utils.command.objects.CommandExecutor;
 import org.kowlintech.utils.command.objects.ObjectCommand;
+import org.kowlintech.utils.snipe.SnipeManager;
 import org.postgresql.util.PSQLException;
 import org.reflections.Reflections;
 
 import javax.security.auth.login.LoginException;
 import java.awt.*;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.lang.annotation.Annotation;
 import java.sql.*;
 import java.time.LocalDateTime;
@@ -32,17 +40,40 @@ import java.util.List;
 
 public class GordonRamsay extends ListenerAdapter {
 
-    private static JDA jda;
+    public static JDA jda;
     private static Connection connection;
     private static LRUMap<Integer, String> insults;
-    private static CommandManager commandManager;
     public static ArrayList<String> devIds;
-    private static ChangelogManager changelogManager;
     private static List<ObjectCommand> commands;
     public static DiscordBotListAPI dblAPI;
+    private static HashMap<String, ObjectCommand> commandHashMap;
+    public static Properties config;
 
-    public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException {
-        Config config = new Config();
+    public static HashMap<Long, String> shovelCooldownHash;
+    public static HashMap<Long, String> crimeCooldownHash;
+    public static HashMap<Long, String> askCooldownHash;
+
+    private static EconomyManager economyManager;
+    private static PhraseManager phraseManager;
+    private static ChangelogManager changelogManager;
+    private static CommandManager commandManager;
+    private static AliasManager aliasManager;
+    private static SnipeManager snipeManager;
+
+    public static HashMap<String, ObjectCommand> aliases;
+
+    private static String dbip;
+    private static String dbuser;
+    private static String dbpasswd;
+    private static String dbname;
+
+    public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+
+        Properties prop = new Properties();
+        FileInputStream file = new FileInputStream("gordon.properties");
+        prop.load(file);
+
+        config = prop;
 
         EventWaiter waiter = new EventWaiter();
 
@@ -52,8 +83,20 @@ public class GordonRamsay extends ListenerAdapter {
         devIds.add("525050292400685077");
         devIds.add("363850072309497876");
         commands = new ArrayList<>();
+        commandHashMap = new HashMap<>();
+        shovelCooldownHash = new HashMap<>();
+        crimeCooldownHash = new HashMap<>();
+        askCooldownHash = new HashMap<>();
+        aliases = new HashMap<>();
 
-        JDABuilder builder = JDABuilder.createDefault(config.getToken());
+        String prefix = prop.getProperty("prefix");
+        String token = prop.getProperty("token");
+        dbip = prop.getProperty("dbip");
+        dbuser = prop.getProperty("dbuser");
+        dbpasswd = prop.getProperty("dbpasswd");
+        dbname = prop.getProperty("dbname");
+
+        JDABuilder builder = JDABuilder.createDefault(token);
         builder.setEnabledIntents(Arrays.asList(GatewayIntent.values()));
         builder.setMemberCachePolicy(MemberCachePolicy.ALL);
         builder.setChunkingFilter(ChunkingFilter.ALL);
@@ -62,11 +105,13 @@ public class GordonRamsay extends ListenerAdapter {
         builder.addEventListeners(
                 waiter,
                 new JoinLeaveListener(),
-                new CommandListener()
+                new CommandListener(),
+                new SnipeListener()
         );
+
         jda = builder.build();
         jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-        jda.getPresence().setActivity(Activity.watching("for " + config.getPrefix() + "help"));
+        jda.getPresence().setActivity(Activity.watching("for " + prefix + "help"));
 
         try {
             openDatabaseConnection();
@@ -80,6 +125,9 @@ public class GordonRamsay extends ListenerAdapter {
             ch.sendMessage("<@525050292400685077> **Action Required!**").queue();
             ch.sendMessage(eb.build()).queue();
         }
+
+        aliasManager = new AliasManager();
+
         try {
             checkTables();
             prepareInsults();
@@ -87,15 +135,14 @@ public class GordonRamsay extends ListenerAdapter {
         changelogManager = new ChangelogManager(jda);
         registerCommands();
 
-        dblAPI = new DiscordBotListAPI.Builder()
-                .token("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjUyODk4NDU1ODYyOTAyNzg0MSIsImJvdCI6dHJ1ZSwiaWF0IjoxNjAxNTkzNzI4fQ.6Xt6iiBM-0m7UpOBxicPCCYPPSrH0J_Ok3771W43nm0")
-                .botId(jda.getSelfUser().getId())
-                .build();
+        economyManager = new EconomyManager(jda, connection);
+        phraseManager = new PhraseManager();
+        snipeManager = new SnipeManager();
     }
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
         Class.forName("org.postgresql.Driver");
-        String url = "jdbc:postgresql://127.0.0.1/gramsay?user=postgres&password=kowlin";
+        String url = "jdbc:postgresql://" + dbip + "/" + dbname + "?user=" + dbuser + "&password=" + dbpasswd + "&sslmode=require";
         Connection conn = DriverManager.getConnection(url);
         connection = conn;
         System.out.println("[DATABASE] Connected to PostgreSQL Database!");
@@ -106,6 +153,13 @@ public class GordonRamsay extends ListenerAdapter {
         st.execute("CREATE TABLE IF NOT EXISTS insults (id SERIAL PRIMARY KEY, insult TEXT NOT NULL UNIQUE);");
         st.execute("CREATE TABLE IF NOT EXISTS changelog (timeadded BIGINT NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL);");
         st.execute("CREATE TABLE IF NOT EXISTS settings (guildid BIGINT NOT NULL, temperatureunit TEXT NOT NULL)");
+        st.execute("CREATE TABLE IF NOT EXISTS economy(coins BIGINT DEFAULT 0 NOT NULL, userid BIGINT NOT NULL, guildid BIGINT NOT NULL)");
+        st.execute("CREATE TABLE IF NOT EXISTS shovel(text TEXT NOT NULL, fate BOOL NOT NULL, id SERIAL PRIMARY KEY)");
+        st.execute("CREATE TABLE IF NOT EXISTS crime(text TEXT NOT NULL, fate BOOL NOT NULL, id SERIAL PRIMARY KEY)");
+        st.execute("CREATE TABLE IF NOT EXISTS ask(text TEXT NOT NULL, fate BOOL NOT NULL, id SERIAL PRIMARY KEY)");
+        st.execute("CREATE TABLE IF NOT EXISTS daily(userid BIGINT NOT NULL, guildid BIGINT NOT NULL, time BIGINT NOT NULL)");
+        st.execute("CREATE TABLE IF NOT EXISTS snipe_settings(guildid BIGINT NOT NULL, enabled BOOL NOT NULL)");
+        st.execute("CREATE TABLE IF NOT EXISTS snipe(contents TEXT NOT NULL, usr BIGINT NOT NULL, guild BIGINT NOT NULL, channel BIGINT NOT NULL, message BIGINT NOT NULL UNIQUE, bot BOOL NOT NULL, time BIGINT NOT NULL)");
     }
 
     private static void prepareInsults() throws SQLException {
@@ -137,6 +191,15 @@ public class GordonRamsay extends ListenerAdapter {
             Annotation annotation = executor.getClass().getDeclaredAnnotation(org.kowlintech.utils.command.objects.Command.class);
             org.kowlintech.utils.command.objects.Command cmd = (org.kowlintech.utils.command.objects.Command) annotation;
             commands.add(new ObjectCommand(executor, cmd));
+            commandHashMap.put(cmd.name(), new ObjectCommand(executor, cmd));
+
+            for(String str : cmd.aliases()) {
+                if(!str.isEmpty()) {
+                    if(!aliasManager.isAliasRegistered(str)) {
+                        aliasManager.addAlias(new ObjectCommand(executor, cmd), str);
+                    }
+                }
+            }
         }
         System.out.println("Registered Commands! (Count: " + commands.size() + ")");
     }
@@ -156,4 +219,12 @@ public class GordonRamsay extends ListenerAdapter {
     public static List<ObjectCommand> getCommands() {
         return commands;
     }
+
+    public static HashMap<String, ObjectCommand> getCommandHashMap() { return commandHashMap; }
+
+    public static EconomyManager getEconomyManager() { return economyManager; }
+
+    public static PhraseManager getPhraseManager() { return phraseManager; }
+
+    public static SnipeManager getSnipeManager() { return snipeManager; }
 }
