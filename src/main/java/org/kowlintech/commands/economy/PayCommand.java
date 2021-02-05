@@ -82,7 +82,7 @@ public class PayCommand implements CommandExecutor {
                 event.reply("You have to give at least 1 token, you fucking idiot!");
                 return;
             }
-        } catch {
+        } catch(NumberFormatException ex) {
             event.reply(String.format("`%s` isn't a number, you fucking idiot!", args[1].trim()));
             return;
         }
