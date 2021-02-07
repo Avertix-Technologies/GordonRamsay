@@ -62,19 +62,31 @@ public class PayCommand implements CommandExecutor {
                 member = found.get(0);
             }
         }
+        
+        Integer amount= 0;
 
-        Integer amount = Integer.parseInt(args[1].trim());
+        try {
+            amount = Integer.parseInt(args[1].trim());
 
-        if(amount == null) {
-            event.reply("`" + args[1] + "` isn't an amount, you fucking idiot!");
+            if(amount == null) {
+                event.reply("`" + args[1] + "` isn't an amount, you fucking idiot!");
+                return;
+            }
+
+            if(amount > userToPay.getBalance()) {
+                event.reply("You can't spend money that you don't have. You clearly shouldn't have a credit card, you fucking idiot!");
+                return;
+            }
+        
+            if(amount < 1) {
+                event.reply("You have to give at least 1 token, you fucking idiot!");
+                return;
+            }
+        } catch(NumberFormatException ex) {
+            event.reply(String.format("`%s` isn't a number, you fucking idiot!", args[1].trim()));
             return;
         }
-
-        if(amount > userToPay.getBalance()) {
-            event.reply("You can't spend money that you don't have. You clearly shouldn't have a credit card, you fucking idiot!");
-            return;
-        }
-
+            
         EconomyUser userToBePaid = manager.getUser(member.getUser(), event.getGuild());
 
         userToPay.removeFromBalance(amount);

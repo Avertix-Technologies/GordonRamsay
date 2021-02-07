@@ -38,6 +38,11 @@ public class GambleCommand implements CommandExecutor {
             event.reply("You can't gamble more than 50,000 <:lambchops:686757563987263542>, you fucking idiot!");
             return;
         }
+        
+        if(amount < 1) {
+            event.reply("You have to give at least 1 token, you fucking idiot!");
+            return;
+        }
 
         if(user.getBalance() < amount) {
             event.reply("You can't gamble money that you don't have. You clearly shouldn't have a credit card, you fucking idiot!");
