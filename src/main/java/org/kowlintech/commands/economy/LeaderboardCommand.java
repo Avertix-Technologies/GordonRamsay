@@ -1,6 +1,7 @@
 package org.kowlintech.commands.economy;
 
 import net.dv8tion.jda.api.EmbedBuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import org.kowlintech.GordonRamsay;
 import org.kowlintech.utils.command.objects.Command;
 import org.kowlintech.utils.command.objects.CommandEvent;
@@ -24,8 +25,9 @@ public class LeaderboardCommand implements CommandExecutor {
             eb.setColor(Global.COLOR);
 
             while (rs.next()) {
+                Guild guild = event.getJDA().getGuildById(rs.getLong("guildid"));
                 try {
-                    eb.addField("#" + (eb.getFields().size() + 1) + " - " + event.getJDA().getUserById(rs.getLong("userid")).getName() + " (" + event.getGuild().getName() + ")",
+                    eb.addField("#" + (eb.getFields().size() + 1) + " - " + event.getJDA().getUserById(rs.getLong("userid")).getName() + " (" + guild.getName() + ")",
                             "Porkchops: " + rs.getLong("coins") + " <:lambchops:686757563987263542>",
                             false
                     );
