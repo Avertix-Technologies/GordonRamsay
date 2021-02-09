@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 @Command(name = "generateinvite", category = Category.OWNER, description = "Generates an invite for a guild.", args = "<guildid> <channelid>")
-public class LambSauceCommand implements CommandExecutor {
+public class GenerateInviteCommand implements CommandExecutor {
 
     @Override
     public void execute(CommandEvent event) {
