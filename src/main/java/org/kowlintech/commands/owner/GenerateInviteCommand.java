@@ -1,4 +1,4 @@
-package org.kowlintech.commands.fun;
+package org.kowlintech.commands.owner;
 
 import com.jagrosh.jdautilities.commons.utils.FinderUtil;
 import net.dv8tion.jda.api.EmbedBuilder;
