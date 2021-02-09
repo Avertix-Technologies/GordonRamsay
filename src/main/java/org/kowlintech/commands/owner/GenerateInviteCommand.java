@@ -17,6 +17,7 @@ public class GenerateInviteCommand implements CommandExecutor {
 
     @Override
     public void execute(CommandEvent event) {
+        String[] args = event.getArgs().split(" ");
         event.getJDA().getGuildById(args[0].trim()).getTextChannelById(args[1].trim()).createInvite().queue(invite -> {
             event.reply(String.format("discord.gg/%s", invite.getCode()));
         });
