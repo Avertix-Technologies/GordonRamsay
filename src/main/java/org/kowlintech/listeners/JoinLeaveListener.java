@@ -1,5 +1,6 @@
 package org.kowlintech.listeners;
 
+import kong.unirest.Unirest;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -63,6 +64,14 @@ public class JoinLeaveListener extends ListenerAdapter {
         log.sendMessage(eb.build()).queue();
 
         GordonRamsay.dblAPI.setStats(event.getJDA().getGuilds().size());
+
+        long id = GordonRamsay.jda.getSelfUser().getIdLong();
+
+        Unirest.post(String.format("https://blist.xyz/api/v2/bot/%s/stats/", id))
+                .header("Authorization", "21RBI6QbzOigTVosm8hU")
+                .field("server_count", event.getJDA().getGuilds().size())
+                .field("shard_count", "1")
+                .asJson();
     }
 
     @Override
@@ -88,6 +97,14 @@ public class JoinLeaveListener extends ListenerAdapter {
         log.sendMessage(eb.build()).queue();
 
         GordonRamsay.dblAPI.setStats(event.getJDA().getGuilds().size());
+
+        long id = GordonRamsay.jda.getSelfUser().getIdLong();
+
+        Unirest.post(String.format("https://blist.xyz/api/v2/bot/%s/stats/", id))
+                .header("Authorization", "21RBI6QbzOigTVosm8hU")
+                .field("server_count", event.getJDA().getGuilds().size())
+                .field("shard_count", "1")
+                .asJson();
     }
 
     @Override
