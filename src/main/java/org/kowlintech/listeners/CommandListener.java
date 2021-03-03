@@ -39,6 +39,10 @@ public class CommandListener extends ListenerAdapter {
         }
 
         if(!event.getMessage().getContentRaw().startsWith(prop.getProperty("prefix")) || event.getAuthor().isBot()) {
+            if(event.getMessage().getContentRaw().contains("<@!528984558629027841>") || event.getMessage().getContentRaw().contains("<@528984558629027841>")) {
+                event.getChannel().sendMessage("Prefix: `g.`").queue();
+                return;
+            }
             return;
         }
         for(ObjectCommand command : GordonRamsay.getCommands()) {
