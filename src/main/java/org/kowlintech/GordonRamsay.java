@@ -59,6 +59,7 @@ public class GordonRamsay extends ListenerAdapter {
     private static CommandManager commandManager;
     private static AliasManager aliasManager;
     private static SnipeManager snipeManager;
+    private static FeedbackManager feedbackManager;
 
     public static HashMap<String, ObjectCommand> aliases;
 
@@ -138,6 +139,7 @@ public class GordonRamsay extends ListenerAdapter {
         economyManager = new EconomyManager(jda, connection);
         phraseManager = new PhraseManager();
         snipeManager = new SnipeManager();
+        feedbackManager = new FeedbackManager();
     }
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
@@ -160,6 +162,8 @@ public class GordonRamsay extends ListenerAdapter {
         st.execute("CREATE TABLE IF NOT EXISTS daily(userid BIGINT NOT NULL, guildid BIGINT NOT NULL, time BIGINT NOT NULL)");
         st.execute("CREATE TABLE IF NOT EXISTS snipe_settings(guildid BIGINT NOT NULL, enabled BOOL NOT NULL)");
         st.execute("CREATE TABLE IF NOT EXISTS snipe(contents TEXT NOT NULL, usr BIGINT NOT NULL, guild BIGINT NOT NULL, channel BIGINT NOT NULL, message BIGINT NOT NULL UNIQUE, bot BOOL NOT NULL, time BIGINT NOT NULL)");
+        st.execute("CREATE TABLE IF NOT EXISTS fb_guild_blacklist(guildid BIGINT NOT NULL)");
+        st.execute("CREATE TABLE IF NOT EXISTS fb_user_blacklist(userid BIGINT NOT NULL)");
     }
 
     private static void prepareInsults() throws SQLException {
@@ -227,4 +231,8 @@ public class GordonRamsay extends ListenerAdapter {
     public static PhraseManager getPhraseManager() { return phraseManager; }
 
     public static SnipeManager getSnipeManager() { return snipeManager; }
+
+    public static FeedbackManager getFeedbackManager() {
+        return feedbackManager;
+    }
 }
