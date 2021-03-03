@@ -22,7 +22,7 @@ public class InfoCommand implements CommandExecutor {
         eb.setThumbnail(event.getJDA().getSelfUser().getAvatarUrl());
 
         // Fields
-        eb.addField("Developers", "KowlinMC#2385\nStarman#5874", false);
+        eb.addField("Developers", "Kowlin#0001\nStarman0620#8456", false);
         eb.addField("Library", "[JDA v" + JDAInfo.VERSION + "](https://github.com/DV8FromTheWorld/JDA)", true);
         eb.addField("Server Count", String.valueOf(event.getJDA().getGuilds().size()), true);
         eb.addField("Support Server", "[Invite](https://discord.gg/SW7bmXm)", true);
