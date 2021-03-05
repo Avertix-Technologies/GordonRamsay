@@ -106,17 +106,4 @@ public class JoinLeaveListener extends ListenerAdapter {
                 .field("shard_count", "1")
                 .asJson();
     }
-
-    @Override
-    public void onReady(ReadyEvent event) {
-        System.out.println("test ready");
-
-        long id = GordonRamsay.jda.getSelfUser().getIdLong();
-
-        Unirest.patch(String.format("https://blist.xyz/api/v2/bot/%s/stats/", id))
-                .header("Authorization", "21RBI6QbzOigTVosm8hU")
-                .field("server_count", event.getJDA().getGuilds().size())
-                .field("shard_count", "1")
-                .asJson();
-    }
 }

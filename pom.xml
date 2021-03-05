@@ -137,5 +137,11 @@
             <artifactId>expiringmap</artifactId>
             <version>0.5.9</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/club.minnced/discord-webhooks -->
+        <dependency>
+            <groupId>club.minnced</groupId>
+            <artifactId>discord-webhooks</artifactId>
+            <version>0.5.5-rc</version>
+        </dependency>
     </dependencies>
 </project>

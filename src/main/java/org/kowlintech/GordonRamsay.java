@@ -3,7 +3,6 @@ package org.kowlintech;
 import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
-import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -18,7 +17,7 @@ import org.apache.commons.collections4.map.LRUMap;
 import org.discordbots.api.client.DiscordBotListAPI;
 import org.kowlintech.listeners.CommandListener;
 import org.kowlintech.listeners.JoinLeaveListener;
-import org.kowlintech.listeners.SnipeListener;
+import org.kowlintech.listeners.ShardListener;
 import org.kowlintech.utils.*;
 import org.kowlintech.utils.command.CommandManager;
 import org.kowlintech.utils.command.objects.CommandExecutor;
@@ -68,6 +67,8 @@ public class GordonRamsay extends ListenerAdapter {
     private static String dbpasswd;
     private static String dbname;
 
+    private static ShardManager shards;
+
     public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
 
         Properties prop = new Properties();
@@ -97,22 +98,23 @@ public class GordonRamsay extends ListenerAdapter {
         dbpasswd = prop.getProperty("dbpasswd");
         dbname = prop.getProperty("dbname");
 
-        JDABuilder builder = JDABuilder.createDefault(token);
-        builder.setEnabledIntents(Arrays.asList(GatewayIntent.values()));
-        builder.setMemberCachePolicy(MemberCachePolicy.ALL);
-        builder.setChunkingFilter(ChunkingFilter.ALL);
-        builder.enableCache(CacheFlag.MEMBER_OVERRIDES);
-        builder.disableIntents(GatewayIntent.GUILD_PRESENCES);
-        builder.addEventListeners(
-                waiter,
-                new JoinLeaveListener(),
-                new CommandListener(),
-                new SnipeListener()
-        );
-
-        jda = builder.build();
-        jda.getPresence().setStatus(OnlineStatus.DO_NOT_DISTURB);
-        jda.getPresence().setActivity(Activity.watching("for " + prefix + "help"));
+        shards = DefaultShardManagerBuilder
+                .createLight(token, Arrays.asList(GatewayIntent.values()))
+                .setShardsTotal(2)
+                .setShards(0, 1)
+                .setActivity(Activity.watching("for " + prefix + "help"))
+                .setStatus(OnlineStatus.DO_NOT_DISTURB)
+                .addEventListeners(
+                        waiter,
+                        new JoinLeaveListener(),
+                        new CommandListener(),
+                        new ShardListener()
+                )
+                .setMemberCachePolicy(MemberCachePolicy.ALL)
+                .setChunkingFilter(ChunkingFilter.ALL)
+                .enableCache(CacheFlag.MEMBER_OVERRIDES)
+                .disableIntents(GatewayIntent.GUILD_PRESENCES)
+                .build();
 
         try {
             openDatabaseConnection();
@@ -206,6 +208,10 @@ public class GordonRamsay extends ListenerAdapter {
             }
         }
         System.out.println("Registered Commands! (Count: " + commands.size() + ")");
+    }
+
+    public static ShardManager getShardManager() {
+        return shards;
     }
 
     public static CommandManager getCommandManager() {

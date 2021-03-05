@@ -24,10 +24,6 @@ import java.util.Properties;
 public class CommandListener extends ListenerAdapter {
     @Override
     public void onGuildMessageReceived(GuildMessageReceivedEvent event) {
-        if(GordonRamsay.getSnipeManager().getGuild(event.getGuild().getIdLong()).isSnipeEnabled()) {
-            GordonRamsay.getSnipeManager().insertMessage(event.getMessage());
-        }
-
         Properties prop = new Properties();
         try {
             FileInputStream file = new FileInputStream("gordon.properties");
