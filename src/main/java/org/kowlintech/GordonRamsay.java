@@ -68,8 +68,10 @@ public class GordonRamsay extends ListenerAdapter {
     private static String dbname;
 
     private static ShardManager shards;
+    public static HashMap<Integer, Long> shard_start_times;
 
     public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
+        shard_start_times = new HashMap<>();
 
         Properties prop = new Properties();
         FileInputStream file = new FileInputStream("gordon.properties");

@@ -9,6 +9,7 @@ import net.dv8tion.jda.api.events.ReadyEvent;
 import net.dv8tion.jda.api.events.ResumedEvent;
 import net.dv8tion.jda.api.events.ShutdownEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
+import org.kowlintech.GordonRamsay;
 
 import java.time.Instant;
 
@@ -16,6 +17,9 @@ public class ShardListener extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent event) {
+        GordonRamsay.shard_start_times.remove(event.getJDA().getShardInfo().getShardId());
+        GordonRamsay.shard_start_times.put(event.getJDA().getShardInfo().getShardId(), System.currentTimeMillis());
+
         WebhookClientBuilder builder = new WebhookClientBuilder("https://discord.com/api/webhooks/817506614306275360/F_dImlHEj1NsRY4kEFpbn-idGc1oXCgAdwpBaB9tv_P3sulSte-gQAcql16ZTEslbUiD");
         builder.setThreadFactory((job) -> {
             Thread thread = new Thread(job);
