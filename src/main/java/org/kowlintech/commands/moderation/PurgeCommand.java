@@ -25,6 +25,7 @@ public class PurgeCommand implements CommandExecutor {
                 List<Message> messages = event.getChannel().getHistory().retrievePast(toPurge + 1).complete();
                 messages.add(event.getRawEvent().getMessage());
                 event.getChannel().purgeMessages(messages);
+                event.reply(":white_check_mark: **Purged " + toPurge + " messages!**");
             } catch (Exception ex) {
                 event.reply("Ok Discord is being a bitch and not letting me delete those messages. You might just want to manually delete those messages if you can.");
                 return;
