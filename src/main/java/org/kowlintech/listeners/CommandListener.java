@@ -43,7 +43,7 @@ public class CommandListener extends ListenerAdapter {
         }
         for(ObjectCommand command : GordonRamsay.getCommands()) {
             try {
-                if (event.getMessage().getContentRaw().startsWith((prop.getProperty("prefix") + command.getInterface().name()).trim().toLowerCase())) {
+                if (event.getMessage().getContentRaw().startsWith((prop.getProperty("prefix") + command.getInterface().name() + " ").trim().toLowerCase()) || event.getMessage().getContentRaw().equalsIgnoreCase(prop.getProperty("prefix") + command.getInterface().name())) {
                     Command cmd = command.getInterface();
                     if (cmd.category().equals(Category.OWNER) && !GordonRamsay.devIds.contains(event.getAuthor().getId())) {
                         event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();
