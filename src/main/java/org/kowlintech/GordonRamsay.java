@@ -5,7 +5,6 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
-import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -21,7 +20,8 @@ import org.kowlintech.listeners.JoinLeaveListener;
 import org.kowlintech.listeners.ShardListener;
 import org.kowlintech.utils.*;
 import org.kowlintech.utils.command.CommandManager;
-import org.kowlintech.utils.command.objects.*;
+import org.kowlintech.utils.command.objects.CommandExecutor;
+import org.kowlintech.utils.command.objects.ObjectCommand;
 import org.kowlintech.utils.snipe.SnipeManager;
 import org.postgresql.util.PSQLException;
 import org.reflections.Reflections;
@@ -44,7 +44,6 @@ public class GordonRamsay extends ListenerAdapter {
     private static LRUMap<Integer, String> insults;
     public static ArrayList<String> devIds;
     private static List<ObjectCommand> commands;
-    private static List<ObjectSlashCommand> slashCommands;
     public static DiscordBotListAPI dblAPI;
     private static HashMap<String, ObjectCommand> commandHashMap;
     public static Properties config;
@@ -60,6 +59,7 @@ public class GordonRamsay extends ListenerAdapter {
     private static AliasManager aliasManager;
     private static SnipeManager snipeManager;
     private static FeedbackManager feedbackManager;
+    private static BlacklistManager blacklistManager;
 
     public static HashMap<String, ObjectCommand> aliases;
 
@@ -70,8 +70,6 @@ public class GordonRamsay extends ListenerAdapter {
 
     private static ShardManager shards;
     public static HashMap<Integer, Long> shard_start_times;
-
-    public static MessageEmbed notice;
 
     public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
         shard_start_times = new HashMap<>();
@@ -90,7 +88,6 @@ public class GordonRamsay extends ListenerAdapter {
         devIds.add("525050292400685077");
         devIds.add("363850072309497876");
         commands = new ArrayList<>();
-        slashCommands = new ArrayList<>();
         commandHashMap = new HashMap<>();
         shovelCooldownHash = new HashMap<>();
         crimeCooldownHash = new HashMap<>();
@@ -142,19 +139,13 @@ public class GordonRamsay extends ListenerAdapter {
             prepareInsults();
         } catch (Exception ex) {}
         changelogManager = new ChangelogManager(jda);
+        registerCommands();
 
         economyManager = new EconomyManager(jda, connection);
         phraseManager = new PhraseManager();
         snipeManager = new SnipeManager();
         feedbackManager = new FeedbackManager();
-
-        registerCommands();
-
-        EmbedBuilder eb = new EmbedBuilder();
-        eb.setTitle("Notice");
-        eb.setColor(Color.YELLOW);
-        eb.setDescription("This bot will be shutting down soon. Please [join the Discord Server](https://discord.gg/gTuvXYN/) for more information.");
-        notice = eb.build();
+        blacklistManager = new BlacklistManager();
     }
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
@@ -179,6 +170,7 @@ public class GordonRamsay extends ListenerAdapter {
         st.execute("CREATE TABLE IF NOT EXISTS snipe(contents TEXT NOT NULL, usr BIGINT NOT NULL, guild BIGINT NOT NULL, channel BIGINT NOT NULL, message BIGINT NOT NULL UNIQUE, bot BOOL NOT NULL, time BIGINT NOT NULL)");
         st.execute("CREATE TABLE IF NOT EXISTS fb_guild_blacklist(guildid BIGINT NOT NULL)");
         st.execute("CREATE TABLE IF NOT EXISTS fb_user_blacklist(userid BIGINT NOT NULL)");
+        st.execute("CREATE TABLE IF NOT EXISTS user_blacklist(userid BIGINT NOT NULL)");
     }
 
     private static void prepareInsults() throws SQLException {
@@ -249,11 +241,11 @@ public class GordonRamsay extends ListenerAdapter {
 
     public static PhraseManager getPhraseManager() { return phraseManager; }
 
-    public static SnipeManager getSnipeManager() { return snipeManager; }
-
-    public static List<ObjectSlashCommand> getSlashCommands() { return slashCommands; }
-
     public static FeedbackManager getFeedbackManager() {
         return feedbackManager;
+    }
+
+    public static BlacklistManager getBlacklistManager() {
+        return blacklistManager;
     }
 }

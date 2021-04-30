@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 import net.dv8tion.jda.api.exceptions.InsufficientPermissionException;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import org.kowlintech.GordonRamsay;
+import org.kowlintech.utils.BlacklistManager;
 import org.kowlintech.utils.command.objects.Command;
 import org.kowlintech.utils.command.objects.CommandEvent;
 import org.kowlintech.utils.command.objects.ObjectCommand;
@@ -43,7 +44,14 @@ public class CommandListener extends ListenerAdapter {
         }
         for(ObjectCommand command : GordonRamsay.getCommands()) {
             try {
-                if (event.getMessage().getContentRaw().startsWith((prop.getProperty("prefix") + command.getInterface().name()).trim().toLowerCase())) {
+                if (event.getMessage().getContentRaw().startsWith((prop.getProperty("prefix") + command.getInterface().name() + " ").trim().toLowerCase()) || event.getMessage().getContentRaw().equalsIgnoreCase(prop.getProperty("prefix") + command.getInterface().name())) {
+                    BlacklistManager manager = GordonRamsay.getBlacklistManager();
+
+                    if(manager.getBlacklist().contains(event.getAuthor().getIdLong())) {
+                        event.getChannel().sendMessage("You have been blacklisted from using this bot.").queue();
+                        return;
+                    }
+
                     Command cmd = command.getInterface();
                     if (cmd.category().equals(Category.OWNER) && !GordonRamsay.devIds.contains(event.getAuthor().getId())) {
                         event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();

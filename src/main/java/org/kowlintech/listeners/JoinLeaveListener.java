@@ -49,7 +49,7 @@ public class JoinLeaveListener extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
 
         eb.setTitle("Joined Guild");
-        eb.setDescription("New Guild Count: " + event.getJDA().getGuilds().size());
+        eb.setDescription("New Guild Count: " + event.getJDA().getShardManager().getGuilds().size());
         eb.addField("Name", guild.getName(), true);
         eb.addField("ID", guild.getId(), true);
         eb.addField("Owner", guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true);
@@ -82,7 +82,7 @@ public class JoinLeaveListener extends ListenerAdapter {
         EmbedBuilder eb = new EmbedBuilder();
 
         eb.setTitle("Left Guild");
-        eb.setDescription("New Guild Count: " + event.getJDA().getGuilds().size());
+        eb.setDescription("New Guild Count: " + event.getJDA().getShardManager().getGuilds().size());
         eb.addField("Name", guild.getName(), true);
         eb.addField("ID", guild.getId(), true);
         eb.addField("Owner", guild.getOwner().getUser().getName() + "#" + guild.getOwner().getUser().getDiscriminator(), true);
