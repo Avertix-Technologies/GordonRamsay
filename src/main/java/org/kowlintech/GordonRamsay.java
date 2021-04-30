@@ -108,7 +108,7 @@ public class GordonRamsay extends ListenerAdapter {
                 .createLight(token, Arrays.asList(GatewayIntent.values()))
                 .setShardsTotal(2)
                 .setShards(0, 1)
-                .setActivity(Activity.watching("for " + prefix + "help"))
+                .setActivity(Activity.watching("for " + prefix + "help (Shutting Down)"))
                 .setStatus(OnlineStatus.DO_NOT_DISTURB)
                 .addEventListeners(
                         waiter,
