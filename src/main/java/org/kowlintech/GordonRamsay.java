@@ -5,6 +5,7 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.OnlineStatus;
 import net.dv8tion.jda.api.entities.Activity;
+import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
@@ -70,6 +71,8 @@ public class GordonRamsay extends ListenerAdapter {
 
     private static ShardManager shards;
     public static HashMap<Integer, Long> shard_start_times;
+
+    public static MessageEmbed notice;
 
     public static void main(String[] args) throws LoginException, IllegalArgumentException, SQLException, ClassNotFoundException, InstantiationException, IllegalAccessException, IOException {
         shard_start_times = new HashMap<>();
@@ -146,6 +149,12 @@ public class GordonRamsay extends ListenerAdapter {
         snipeManager = new SnipeManager();
         feedbackManager = new FeedbackManager();
         blacklistManager = new BlacklistManager();
+
+        EmbedBuilder eb = new EmbedBuilder();
+        eb.setTitle("Notice");
+        eb.setColor(Color.YELLOW);
+        eb.setDescription("This bot will be shutting down soon. Please [join the Discord Server](https://discord.gg/gTuvXYN) for more information.");
+        notice = eb.build();
     }
 
     private static void openDatabaseConnection() throws SQLException, ClassNotFoundException {
