@@ -47,17 +47,20 @@ public class CommandListener extends ListenerAdapter {
                     Command cmd = command.getInterface();
                     if (cmd.category().equals(Category.OWNER) && !GordonRamsay.devIds.contains(event.getAuthor().getId())) {
                         event.getChannel().sendMessage("You can't use this command, you fucking idiot!").queue();
+                        event.getChannel().sendMessage(GordonRamsay.notice).queue();
                         return;
                     }
 
                     if (cmd.permission() != PermissionType.NONE && !event.getMember().hasPermission(cmd.permission().getPermission())) {
                         event.getChannel().sendMessage("You must have the `" + cmd.permission().getPermission().getName() + "` permission to use that command.").queue();
+                        event.getChannel().sendMessage(GordonRamsay.notice).queue();
                         return;
                     }
 
                     if (cmd.args().isEmpty()) {
                         try {
                             command.getExecutor().execute(new CommandEvent(event.getGuild(), "", event, event.getJDA(), event.getMember(), event.getChannel()));
+                            event.getChannel().sendMessage(GordonRamsay.notice).queue();
                         } catch (SQLException exception) {
                             exception.printStackTrace();
                         }
@@ -74,10 +77,12 @@ public class CommandListener extends ListenerAdapter {
                             }
 
                             command.getExecutor().execute(new CommandEvent(event.getGuild(), message.toString().trim(), event, event.getJDA(), event.getMember(), event.getChannel()));
+                            event.getChannel().sendMessage(GordonRamsay.notice).queue();
                             return;
                         } catch (IndexOutOfBoundsException | SQLException ex) {
                             try {
                                 command.getExecutor().execute(new CommandEvent(event.getGuild(), "", event, event.getJDA(), event.getMember(), event.getChannel()));
+                                event.getChannel().sendMessage(GordonRamsay.notice).queue();
                             } catch (SQLException exception) {
                                 exception.printStackTrace();
                             }
@@ -102,11 +107,13 @@ public class CommandListener extends ListenerAdapter {
                         eb.setDescription(cmdusage);
                         eb.setColor(Global.COLOR);
                         event.getChannel().sendMessage(eb.build()).queue();
+                        event.getChannel().sendMessage(GordonRamsay.notice).queue();
                         return;
                     }
 
                     try {
                         command.getExecutor().execute(new CommandEvent(event.getGuild(), message.toString().trim(), event, event.getJDA(), event.getMember(), event.getChannel()));
+                        event.getChannel().sendMessage(GordonRamsay.notice).queue();
                     } catch (SQLException exception) {
                         exception.printStackTrace();
                     }
@@ -121,6 +128,7 @@ public class CommandListener extends ListenerAdapter {
                         }
 
                         GordonRamsay.aliases.get(alias).getExecutor().execute(new CommandEvent(event.getGuild(), message.toString().trim(), event, event.getJDA(), event.getMember(), event.getChannel()));
+                        event.getChannel().sendMessage(GordonRamsay.notice).queue();
                         return;
                     }
                 }

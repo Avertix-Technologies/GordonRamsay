@@ -77,13 +77,17 @@
             <id>jitpack.io</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>DV8</id>
+            <url>https://m2.dv8tion.net/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
         <dependency>
-            <groupId>net.dv8tion</groupId>
-            <artifactId>JDA</artifactId>
-            <version>4.2.0_183</version>
+            <groupId>com.github.dv8fromtheworld</groupId>
+            <artifactId>jda</artifactId>
+            <version>feature~slash-commands</version>
         </dependency>
         <dependency>
             <groupId>com.jagrosh</groupId>

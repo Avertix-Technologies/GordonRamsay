@@ -4,5 +4,5 @@ import java.sql.SQLException;
 
 public interface SlashCommandExecutor {
 
-    void execute(CommandEvent event) throws SQLException;
+    void execute(SlashCommandEvent event) throws SQLException;
 }
